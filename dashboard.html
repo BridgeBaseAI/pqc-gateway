@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PQC Gateway — Command Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c10;
+    --surface: #0d1117;
+    --surface2: #131920;
+    --border: rgba(0,255,180,0.12);
+    --border2: rgba(0,255,180,0.25);
+    --accent: #00ffb4;
+    --accent2: #00c8ff;
+    --accent3: #ff6b35;
+    --text: #e2ffe6;
+    --muted: #5a7a6a;
+    --danger: #ff4d6d;
+    --mono: 'Space Mono', monospace;
+    --display: 'Syne', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,180,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,180,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+
+  /* Header */
+  header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo-block {}
+  .logo-tag {
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .logo-title {
+    font-family: var(--display);
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+  }
+  .logo-title span { color: var(--accent); }
+
+  .status-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,255,180,0.06);
+    border: 1px solid var(--border2);
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-size: 11px;
+    color: var(--accent);
+  }
+  .pulse {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,255,180,0.4); }
+    50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(0,255,180,0); }
+  }
+
+  /* Stat cards */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: border-color 0.2s;
+  }
+  .stat:hover { border-color: var(--border2); }
+  .stat::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent-line, var(--accent));
+    opacity: 0.6;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .stat-value {
+    font-family: var(--display);
+    font-size: 32px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-sub { font-size: 11px; color: var(--muted); }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+    width: fit-content;
+  }
+  .tab {
+    padding: 8px 20px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    background: none;
+    border: none;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+  }
+  .tab.active {
+    background: rgba(0,255,180,0.1);
+    color: var(--accent);
+    border: 1px solid var(--border2);
+  }
+  .tab:hover:not(.active) { color: var(--text); }
+
+  /* Panel */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* Agent table */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .table-title {
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .refresh-btn {
+    background: rgba(0,255,180,0.08);
+    border: 1px solid var(--border2);
+    color: var(--accent);
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 11px;
+    transition: all 0.15s;
+  }
+  .refresh-btn:hover { background: rgba(0,255,180,0.15); }
+
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left;
+    padding: 10px 18px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    background: rgba(0,0,0,0.2);
+    font-weight: 400;
+  }
+  td {
+    padding: 13px 18px;
+    border-bottom: 1px solid rgba(0,255,180,0.05);
+    vertical-align: middle;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(0,255,180,0.03); }
+
+  .agent-id {
+    font-family: var(--mono);
+    color: var(--accent2);
+    font-size: 13px;
+  }
+  .pub-key {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .score-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,255,180,0.1);
+    border: 1px solid var(--border2);
+    color: var(--accent);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    min-width: 40px;
+  }
+  .score-badge.high {
+    background: rgba(0,255,180,0.2);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .algo-tag {
+    background: rgba(0,200,255,0.1);
+    border: 1px solid rgba(0,200,255,0.25);
+    color: var(--accent2);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .ts-text { color: var(--muted); font-size: 11px; }
+
+  /* Register panel */
+  .reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px;
+  }
+
+  .card-title {
+    font-family: var(--display);
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .card-sub { color: var(--muted); font-size: 11px; margin-bottom: 18px; line-height: 1.5; }
+
+  label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  input[type="text"], textarea {
+    width: 100%;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    margin-bottom: 14px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  input[type="text"]:focus, textarea:focus {
+    border-color: var(--border2);
+  }
+  textarea { height: 80px; resize: vertical; }
+
+  .btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+  }
+  .btn-primary:hover { background: #00e0a0; }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Result box */
+  .result-box {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+    min-height: 80px;
+    word-break: break-all;
+  }
+  .result-box.success { border-color: var(--accent); color: var(--accent); }
+  .result-box.error { border-color: var(--danger); color: var(--danger); }
+
+  .key-display {
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(0,255,180,0.3);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 10px;
+    color: var(--accent);
+    word-break: break-all;
+    line-height: 1.6;
+    margin-top: 10px;
+    max-height: 120px;
+    overflow-y: auto;
+  }
+
+  .copy-btn {
+    margin-top: 8px;
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--accent);
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { background: rgba(0,255,180,0.1); }
+
+  /* Handshake panel */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    position: relative;
+  }
+  .step.done { border-color: var(--accent); }
+  .step.active-step { border-color: var(--accent2); animation: stepglow 2s ease-in-out infinite; }
+  @keyframes stepglow {
+    0%,100% { box-shadow: 0 0 0 0 rgba(0,200,255,0); }
+    50% { box-shadow: 0 0 16px rgba(0,200,255,0.2); }
+  }
+
+  .step-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(0,255,180,0.1);
+    border: 1px solid var(--border2);
+    color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    margin-bottom: 10px;
+    font-family: var(--display);
+  }
+  .step.done .step-num { background: var(--accent); color: #000; border-color: var(--accent); }
+
+  .step-label {
+    font-family: var(--display);
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .step-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  .log-area {
+    background: rgba(0,0,0,0.6);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.9;
+    min-height: 160px;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  .log-line { display: flex; gap: 10px; }
+  .log-time { color: var(--muted); flex-shrink: 0; }
+  .log-ok { color: var(--accent); }
+  .log-info { color: var(--accent2); }
+  .log-err { color: var(--danger); }
+  .log-warn { color: var(--accent3); }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+  }
+  .empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.3; }
+  .empty-text { font-family: var(--display); font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .empty-sub { font-size: 12px; }
+
+  /* Spinner */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner {
+    display: inline-block;
+    width: 12px; height: 12px;
+    border: 2px solid rgba(0,255,180,0.2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+
+  @media (max-width: 700px) {
+    .stats { grid-template-columns: 1fr 1fr; }
+    .reg-grid, .steps { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Header -->
+  <header>
+    <div class="logo-block">
+      <div class="logo-tag">// ml-kem-768 · nist fips 203</div>
+      <div class="logo-title">PQC <span>Gateway</span></div>
+    </div>
+    <div class="status-pill">
+      <div class="pulse"></div>
+      <span id="gateway-status">Connecting...</span>
+    </div>
+  </header>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat" style="--accent-line: var(--accent)">
+      <div class="stat-label">Registered Agents</div>
+      <div class="stat-value" id="stat-agents">—</div>
+      <div class="stat-sub">on-chain identities</div>
+    </div>
+    <div class="stat" style="--accent-line: var(--accent2)">
+      <div class="stat-label">Total Handshakes</div>
+      <div class="stat-value" id="stat-handshakes">—</div>
+      <div class="stat-sub">verified sessions</div>
+    </div>
+    <div class="stat" style="--accent-line: var(--accent3)">
+      <div class="stat-label">Algorithm</div>
+      <div class="stat-value" style="font-size:16px;padding-top:8px">ML-KEM-768</div>
+      <div class="stat-sub">NIST FIPS 203 standard</div>
+    </div>
+    <div class="stat" style="--accent-line: #ff4d6d">
+      <div class="stat-label">Quantum Resistance</div>
+      <div class="stat-value" style="color:var(--accent);font-size:22px;padding-top:4px">ACTIVE</div>
+      <div class="stat-sub">harvest-now-decrypt-later proof</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('agents')">Agent Registry</button>
+    <button class="tab" onclick="showTab('register')">Register Agent</button>
+    <button class="tab" onclick="showTab('handshake')">Run Handshake</button>
+  </div>
+
+  <!-- PANEL: Agent Registry -->
+  <div class="panel active" id="panel-agents">
+    <div class="table-wrap">
+      <div class="table-header">
+        <div class="table-title">Registered Agents</div>
+        <button class="refresh-btn" onclick="loadAgents()">↻ Refresh</button>
+      </div>
+      <div id="agents-body">
+        <div class="empty-state">
+          <div class="empty-icon">◈</div>
+          <div class="empty-text">Loading registry...</div>
+          <div class="empty-sub">Fetching agents from gateway</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL: Register Agent -->
+  <div class="panel" id="panel-register">
+    <div class="reg-grid">
+      <div class="card">
+        <div class="card-title">Register New Agent</div>
+        <div class="card-sub">Generates an ML-KEM-768 keypair. The private key is returned once — store it securely.</div>
+        <label>Agent ID</label>
+        <input type="text" id="reg-id" placeholder="e.g. solana-swap-agent-002">
+        <label>Owner</label>
+        <input type="text" id="reg-owner" placeholder="e.g. alice.sol">
+        <label>Capabilities (comma-separated)</label>
+        <input type="text" id="reg-caps" placeholder="e.g. swap, transfer, stake">
+        <button class="btn-primary" id="reg-btn" onclick="registerAgent()">Generate Keypair & Register</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Registration Result</div>
+        <div class="card-sub">Your private key is shown once below. Copy and store it offline.</div>
+        <div class="result-box" id="reg-result">Awaiting registration...</div>
+        <div id="key-section" style="display:none">
+          <label style="margin-top:14px">Private Key (ONE-TIME — save now)</label>
+          <div class="key-display" id="priv-key-display"></div>
+          <button class="copy-btn" onclick="copyKey()">Copy Private Key</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL: Handshake -->
+  <div class="panel" id="panel-handshake">
+    <div class="steps">
+      <div class="step" id="step1">
+        <div class="step-num">1</div>
+        <div class="step-label">Challenge</div>
+        <div class="step-desc">Gateway encrypts a secret with agent's public key</div>
+      </div>
+      <div class="step" id="step2">
+        <div class="step-num">2</div>
+        <div class="step-label">Decapsulate</div>
+        <div class="step-desc">Agent recovers shared secret using private key</div>
+      </div>
+      <div class="step" id="step3">
+        <div class="step-num">3</div>
+        <div class="step-label">Verify</div>
+        <div class="step-desc">Gateway confirms match, issues session token</div>
+      </div>
+    </div>
+
+    <div class="reg-grid" style="margin-bottom:16px">
+      <div class="card">
+        <div class="card-title">Agent Credentials</div>
+        <div class="card-sub">Paste your agent ID and the private key from registration.</div>
+        <label>Agent ID</label>
+        <input type="text" id="hs-id" placeholder="e.g. solana-swap-agent-002">
+        <label>Private Key (base64)</label>
+        <textarea id="hs-privkey" placeholder="Paste your private key here..."></textarea>
+        <button class="btn-primary" id="hs-btn" onclick="runHandshake()">Run Full Handshake</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Handshake Log</div>
+        <div class="card-sub">Live output of the PQC authentication flow.</div>
+        <div class="log-area" id="hs-log">
+          <div class="log-line"><span class="log-time">--:--:--</span><span class="log-info">Ready. Enter credentials and run handshake.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const API = '';
+let allAgents = [];
+
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    t.classList.toggle('active', ['agents','register','handshake'][i] === name);
+  });
+  document.querySelectorAll('.panel').forEach((p,i) => {
+    p.classList.toggle('active', ['panel-agents','panel-register','panel-handshake'][i] === 'panel-'+name);
+  });
+  if (name === 'agents') loadAgents();
+}
+
+function ts() {
+  return new Date().toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+
+function log(msg, type='info') {
+  const box = document.getElementById('hs-log');
+  const line = document.createElement('div');
+  line.className = 'log-line';
+  line.innerHTML = `<span class="log-time">${ts()}</span><span class="log-${type}">${msg}</span>`;
+  box.appendChild(line);
+  box.scrollTop = box.scrollHeight;
+}
+
+async function checkHealth() {
+  try {
+    const r = await fetch(`${API}/health`);
+    if (r.ok) {
+      document.getElementById('gateway-status').textContent = 'Gateway Online';
+      return true;
+    }
+  } catch(e) {}
+  document.getElementById('gateway-status').textContent = 'Gateway Offline';
+  return false;
+}
+
+async function loadAgents() {
+  const body = document.getElementById('agents-body');
+  body.innerHTML = `<div class="empty-state"><div class="spinner"></div> Fetching agents...</div>`;
+
+  // Fetch all agents from the real /agents endpoint
+  let agentIds = [];
+  try {
+    const listR = await fetch(`${API}/agents`);
+    const listD = await listR.json();
+    agentIds = listD.agents || [];
+  } catch(e) {}
+
+  const results = [];
+  for (const id of agentIds) {
+    try {
+      const r = await fetch(`${API}/passport/${encodeURIComponent(id)}`);
+      if (r.ok) results.push(await r.json());
+    } catch(e) {}
+  }
+
+  // Update stat
+  document.getElementById('stat-agents').textContent = results.length;
+  const totalScore = results.reduce((s,a) => s + (a.reputation_score||0), 0);
+  document.getElementById('stat-handshakes').textContent = totalScore;
+
+  if (results.length === 0) {
+    body.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">◈</div>
+        <div class="empty-text">No agents registered yet</div>
+        <div class="empty-sub">Go to Register Agent tab to create your first quantum-safe agent</div>
+      </div>`;
+    return;
+  }
+
+  const rows = results.map(a => `
+    <tr>
+      <td><span class="agent-id">${a.agent_id}</span></td>
+      <td><span class="pub-key">${a.public_key}</span></td>
+      <td><span class="algo-tag">ML-KEM-768</span></td>
+      <td><span class="score-badge ${a.reputation_score >= 5 ? 'high' : ''}">${a.reputation_score}</span></td>
+      <td class="ts-text">${new Date(a.registered_at).toLocaleDateString()}</td>
+    </tr>
+  `).join('');
+
+  body.innerHTML = `
+    <table>
+      <thead><tr>
+        <th>Agent ID</th>
+        <th>Public Key</th>
+        <th>Algorithm</th>
+        <th>Reputation</th>
+        <th>Registered</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+async function registerAgent() {
+  const id = document.getElementById('reg-id').value.trim();
+  const owner = document.getElementById('reg-owner').value.trim();
+  const caps = document.getElementById('reg-caps').value.split(',').map(s=>s.trim()).filter(Boolean);
+
+  if (!id) { alert('Agent ID is required'); return; }
+
+  const btn = document.getElementById('reg-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Generating keypair...';
+
+  const result = document.getElementById('reg-result');
+  result.className = 'result-box';
+  result.textContent = 'Calling gateway...';
+
+  try {
+    const r = await fetch(`${API}/register`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ agent_id: id, metadata: { owner, capabilities: caps } })
+    });
+
+    const data = await r.json();
+
+    if (r.status === 201) {
+      // Store agent id for registry
+      const stored = JSON.parse(localStorage.getItem('pqc_agents') || '[]');
+      if (!stored.includes(id)) { stored.push(id); localStorage.setItem('pqc_agents', JSON.stringify(stored)); }
+
+      result.className = 'result-box success';
+      result.textContent = `✓ Agent "${data.agent_id}" registered with ML-KEM-768\n✓ Public key stored in gateway registry\n⚠ Copy your private key now — it will not be shown again`;
+
+      document.getElementById('key-section').style.display = 'block';
+      document.getElementById('priv-key-display').textContent = data.private_key_plaintext;
+    } else if (r.status === 409) {
+      result.className = 'result-box error';
+      result.textContent = `Agent "${id}" already exists in registry.`;
+    } else {
+      result.className = 'result-box error';
+      result.textContent = JSON.stringify(data, null, 2);
+    }
+  } catch(e) {
+    result.className = 'result-box error';
+    result.textContent = 'Cannot reach gateway. Is Docker running?\nRun: docker compose up';
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Generate Keypair & Register';
+}
+
+function copyKey() {
+  const key = document.getElementById('priv-key-display').textContent;
+  navigator.clipboard.writeText(key).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.textContent = 'Copy Private Key', 2000);
+  });
+}
+
+async function runHandshake() {
+  const agentId = document.getElementById('hs-id').value.trim();
+  const privKeyB64 = document.getElementById('hs-privkey').value.trim();
+
+  if (!agentId || !privKeyB64) { alert('Agent ID and private key required'); return; }
+
+  const btn = document.getElementById('hs-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Running...';
+
+  // Reset steps
+  ['step1','step2','step3'].forEach(id => {
+    document.getElementById(id).className = 'step';
+    document.getElementById(id).querySelector('.step-num').textContent = id.slice(-1);
+  });
+
+  document.getElementById('hs-log').innerHTML = '';
+  log(`Starting PQC handshake for agent: ${agentId}`, 'info');
+
+  try {
+    // Step 1: Challenge
+    document.getElementById('step1').className = 'step active-step';
+    log('→ POST /challenge', 'info');
+    const cr = await fetch(`${API}/challenge`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ agent_id: agentId })
+    });
+
+    if (!cr.ok) {
+      const e = await cr.json();
+      log(`✗ Challenge failed: ${e.detail || cr.status}`, 'err');
+      document.getElementById('step1').className = 'step';
+      btn.disabled = false; btn.textContent = 'Run Full Handshake';
+      return;
+    }
+
+    const cd = await cr.json();
+    log(`✓ Challenge issued: ${cd.challenge_id.slice(0,16)}...`, 'ok');
+    log(`✓ Ciphertext received: ${cd.ciphertext.slice(0,20)}...`, 'ok');
+    log(`  Expires in: ${cd.expires_in_seconds}s`, 'info');
+    document.getElementById('step1').className = 'step done';
+    document.getElementById('step1').querySelector('.step-num').textContent = '✓';
+
+    // Step 2: The browser can't run oqs natively, so we call a helper endpoint
+    document.getElementById('step2').className = 'step active-step';
+    log('→ Decapsulating ciphertext with private key...', 'info');
+    log('  (Calling /dev/solve — gateway-side for browser demo)', 'warn');
+
+    // We use a special solve endpoint we'll add to main.py
+    const sr = await fetch(`${API}/dev/solve`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ private_key_b64: privKeyB64, ciphertext_b64: cd.ciphertext })
+    });
+
+    if (!sr.ok) {
+      log('✗ Decapsulation failed — check private key', 'err');
+      document.getElementById('step2').className = 'step';
+      btn.disabled = false; btn.textContent = 'Run Full Handshake';
+      return;
+    }
+
+    const sd = await sr.json();
+    log(`✓ Shared secret recovered: ${sd.shared_secret_b64.slice(0,20)}...`, 'ok');
+    log('  Private key processed — secret stays local in production', 'warn');
+    document.getElementById('step2').className = 'step done';
+    document.getElementById('step2').querySelector('.step-num').textContent = '✓';
+
+    // Step 3: Verify
+    document.getElementById('step3').className = 'step active-step';
+    log('→ POST /verify', 'info');
+
+    const vr = await fetch(`${API}/verify`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ challenge_id: cd.challenge_id, shared_secret_b64: sd.shared_secret_b64 })
+    });
+
+    const vd = await vr.json();
+
+    if (vd.verified) {
+      log(`✓ VERIFIED — PQC handshake complete`, 'ok');
+      log(`✓ Reputation score: ${vd.reputation_score}`, 'ok');
+      log(`✓ Session token: ${vd.session_token.slice(0,20)}...`, 'ok');
+      document.getElementById('step3').className = 'step done';
+      document.getElementById('step3').querySelector('.step-num').textContent = '✓';
+
+      // Update stat
+      const stored = JSON.parse(localStorage.getItem('pqc_agents') || '[]');
+      if (!stored.includes(agentId)) { stored.push(agentId); localStorage.setItem('pqc_agents', JSON.stringify(stored)); }
+    } else {
+      log('✗ Verification failed', 'err');
+      document.getElementById('step3').className = 'step';
+    }
+
+  } catch(e) {
+    log(`✗ Error: ${e.message}`, 'err');
+    log('  Is Docker running? Run: docker compose up', 'warn');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Run Full Handshake';
+}
+
+// Init
+checkHealth();
+loadAgents();
+setInterval(checkHealth, 10000);
+</script>
+</body>
+</html>

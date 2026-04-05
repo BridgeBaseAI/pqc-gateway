@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pqc_gateway
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      # SQLite path inside the container (persisted via volume)
+      DB_PATH: /data/registry.db
+      # Challenge TTL in seconds (5 minutes default)
+      CHALLENGE_TTL_SECONDS: 300
+    volumes:
+      # Persist the SQLite database across container restarts
+      - gateway_data:/data
+      # Mount source code for hot-reload during development
+      # Comment out in production
+      - .:/app
+    command: >
+      uvicorn main:app
+        --host 0.0.0.0
+        --port 8000
+        --reload
+        --reload-dir /app
+
+  # ── Optional: Swagger UI already built into FastAPI at /docs ──────────
+  # Uncomment if you want a standalone Redoc instance on port 8080
+  # redoc:
+  #   image: redocly/redoc
+  #   ports:
+  #     - "8080:80"
+  #   environment:
+  #     SPEC_URL: "http://gateway:8000/openapi.json"
+  #   depends_on:
+  #     - gateway
+
+volumes:
+  gateway_data:
+    driver: local

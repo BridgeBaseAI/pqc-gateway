@@ -1,4 +1,4 @@
-# 🌉 BridgeBase
+#  BridgeBaseAI
 **The Trust Layer for the Agentic Economy**
 
 [![Live Demo](https://img.shields.io/badge/Live-Railway-00ff00?style=for-the-badge)](https://pqc-gateway-production.up.railway.app)
@@ -71,6 +71,6 @@ if client.validate_token("solana-trader-001", session_token):
 
 ---
 
-**BridgeBase** — *Securing the agents of today against the threats of tomorrow.*
+**BridgeBaseAI** — *Securing the agents of today against the threats of tomorrow.*
 
 Contact: [bridgebaseai@gmail.com](mailto:bridgebaseai@gmail.com)

@@ -1,0 +1,12 @@
+[
+  {
+    "seq": 1,
+    "agent_id": "reputation-agent-001",
+    "reputation": 1,
+    "event": "verify",
+    "timestamp": "2026-04-10T22:47:32.836897+00:00",
+    "tx_signature": "5LKiegao7wY4BtMjVPLA1gGLqGiMSFWq24WYZp1sWei7gbWarmFYe9fP3zZmiXbyr2rB4eDrfYcEBfQxq1sC663k",
+    "prev_hash": "genesis",
+    "hash": "3a69d08749cfbd53"
+  }
+]

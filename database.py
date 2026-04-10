@@ -2,7 +2,9 @@
 Database layer — SQLite for local/dev, swap connection string for Supabase/Postgres.
 """
 
+import os
 import sqlite3
+from pathlib import Path
 from typing import Optional
 
 from models import AgentPassport
@@ -11,11 +13,13 @@ from models import AgentPassport
 class Database:
     def __init__(self, db_path: str = "/app/data/registry.db") -> None:
         self.db_path = db_path
+        # Create directory if it doesn't exist (fixes Railway volume issue)
+        Path(db_path).parent.mkdir(parents=True, exist_ok=True)
 
     def _conn(self) -> sqlite3.Connection:
         conn = sqlite3.connect(self.db_path)
         conn.row_factory = sqlite3.Row
-        conn.execute("PRAGMA journal_mode=WAL;")   # safe for concurrent reads
+        conn.execute("PRAGMA journal_mode=WAL;")
         conn.execute("PRAGMA foreign_keys=ON;")
         return conn
 
@@ -109,13 +113,7 @@ class Database:
     # Challenges
     # ------------------------------------------------------------------
 
-    def save_challenge(
-        self,
-        challenge_id: str,
-        agent_id: str,
-        shared_secret_b64: str,
-        expires_at: float,
-    ) -> None:
+    def save_challenge(self, challenge_id, agent_id, shared_secret_b64, expires_at):
         with self._conn() as conn:
             conn.execute(
                 """

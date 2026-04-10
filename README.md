@@ -5,12 +5,12 @@
 [![SDK](https://img.shields.io/badge/SDK-Python-blue?style=for-the-badge)](https://github.com/BridgeBaseAI/pqc-gateway)
 [![Algorithm](https://img.shields.io/badge/PQC-ML--KEM--768-green?style=for-the-badge)](https://csrc.nist.gov/pubs/fips/203/ipd)
 
-## 🌐 Overview
+## 1 Overview
 BridgeBase is a **Quantum-Safe AI Agent Gateway** designed to secure the "Agentic Economy." As AI agents increasingly manage treasury wallets and execute on-chain swaps, standard ECDSA/Ed25519 signatures are vulnerable to future quantum threats. 
 
 BridgeBase introduces the **"Quantum Tax"**: a mandatory Post-Quantum Cryptographic (PQC) handshake that AI agents must pass before they are authorized to sign or broadcast blockchain transactions.
 
-## 🛠 The Architecture
+## 2 The Architecture
 BridgeBase sits between the **AI Agent** and the **Blockchain (Solana)**.
 
 1. **Identity:** Agents register with a NIST-standard ML-KEM-768 public key.
@@ -20,7 +20,7 @@ BridgeBase sits between the **AI Agent** and the **Blockchain (Solana)**.
 
 ---
 
-## 🚀 Quick Start (Python SDK)
+## 3 Quick Start (Python SDK)
 
 Secure your agent in seconds.
 
@@ -52,17 +52,17 @@ if client.validate_token("solana-trader-001", session_token):
 
 ---
 
-## 🏛 Technical Stack
+## 4 Technical Stack
 - **PQC Algorithm:** ML-KEM-768 (NIST FIPS 203) via `liboqs`.
 - **Backend:** FastAPI (Python 3.14).
 - **Blockchain:** Solana Devnet (Transaction Gating + On-chain Reputation).
 - **Infrastructure:** Docker + Railway (24/7 Global Availability).
 
-## 📊 Market Context
+## 5 Market Context
 - **The Problem:** 76% of crypto hacks in 2025 resulted from key compromises. AI agents represent a new, massive attack surface.
 - **The Solution:** BridgeBase adds a quantum-hardened identity layer, ensuring that even if a traditional wallet key is leaked, the agent must still pass a PQC handshake to move funds.
 
-## 🛣 Roadmap
+## 6 Roadmap
 - [x] Layer 1-5: Live PQC Gateway & Cloud Infrastructure
 - [x] Layer 6: Python SDK
 - [x] Layer 7: Solana On-Chain Reputation Logs

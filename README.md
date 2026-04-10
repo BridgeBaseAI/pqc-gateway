@@ -1,168 +1,76 @@
-# Quantum-Safe AI Agent Gateway
+# 🌉 BridgeBase
+**The Trust Layer for the Agentic Economy**
 
-A FastAPI service that issues and verifies **ML-KEM-768 (Kyber)** identities for AI agents.
-Built to run for free on Oracle Cloud Always Free (4 ARM cores / 24 GB RAM).
+[![Live Demo](https://img.shields.io/badge/Live-Railway-00ff00?style=for-the-badge)](https://pqc-gateway-production.up.railway.app)
+[![SDK](https://img.shields.io/badge/SDK-Python-blue?style=for-the-badge)](https://github.com/BridgeBaseAI/pqc-gateway)
+[![Algorithm](https://img.shields.io/badge/PQC-ML--KEM--768-green?style=for-the-badge)](https://csrc.nist.gov/pubs/fips/203/ipd)
 
----
+## 🌐 Overview
+BridgeBase is a **Quantum-Safe AI Agent Gateway** designed to secure the "Agentic Economy." As AI agents increasingly manage treasury wallets and execute on-chain swaps, standard ECDSA/Ed25519 signatures are vulnerable to future quantum threats. 
 
-## Architecture — 3-Step Handshake
+BridgeBase introduces the **"Quantum Tax"**: a mandatory Post-Quantum Cryptographic (PQC) handshake that AI agents must pass before they are authorized to sign or broadcast blockchain transactions.
 
-```
-AGENT                          GATEWAY (this service)
-  │                                     │
-  │──── POST /register ───────────────▶│  Gateway generates ML-KEM-768 keypair
-  │◀─── { public_key, private_key } ───│  Private key returned ONCE — store it!
-  │                                     │
-  │──── POST /challenge ──────────────▶│  Gateway encapsulates a shared secret
-  │◀─── { challenge_id, ciphertext } ──│  using agent's public key → ciphertext
-  │                                     │
-  │  Agent decapsulates ciphertext      │
-  │  with private key → shared_secret  │
-  │                                     │
-  │──── POST /verify ─────────────────▶│  Gateway compares shared secrets
-  │◀─── { session_token, reputation } ─│  On match: issues token + bumps score
-```
+## 🛠 The Architecture
+BridgeBase sits between the **AI Agent** and the **Blockchain (Solana)**.
+
+1. **Identity:** Agents register with a NIST-standard ML-KEM-768 public key.
+2. **Challenge:** When an agent wants to act, BridgeBase issues a PQC ciphertext challenge.
+3. **Verification:** The agent must decapsulate the secret using its private PQC key.
+4. **Gating:** Once verified, the gateway issues a 3600s session token. No token = No transaction.
 
 ---
 
-## Quick Start
+## 🚀 Quick Start (Python SDK)
 
-### Prerequisites
-- Docker + Docker Compose
+Secure your agent in seconds.
 
-### Run locally
-
+### Installation
 ```bash
-git clone <your-repo>
-cd pqc_gateway
-docker compose up --build
+# Clone the repository
+git clone [https://github.com/BridgeBaseAI/pqc-gateway.git](https://github.com/BridgeBaseAI/pqc-gateway.git)
+cd pqc-gateway
+pip install -r requirements.txt
 ```
 
-API is live at **http://localhost:8000**
-Interactive docs at **http://localhost:8000/docs**
-
----
-
-## Endpoint Reference
-
-### `POST /register`
-Register an agent and get its quantum-safe keypair.
-
-```bash
-curl -X POST http://localhost:8000/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "agent_id": "swap-agent-001",
-    "metadata": { "owner": "alice.sol", "capabilities": ["swap"] }
-  }'
-```
-
-**Response:**
-```json
-{
-  "agent_id": "swap-agent-001",
-  "public_key": "<base64>",
-  "private_key_plaintext": "<base64 — store this NOW>",
-  "algorithm": "ML-KEM-768"
-}
-```
-
----
-
-### `POST /challenge`
-Request a PQC ciphertext challenge for an agent.
-
-```bash
-curl -X POST http://localhost:8000/challenge \
-  -H "Content-Type: application/json" \
-  -d '{ "agent_id": "swap-agent-001" }'
-```
-
-**Response:**
-```json
-{
-  "challenge_id": "uuid",
-  "ciphertext": "<base64 — decapsulate with your private key>",
-  "expires_in_seconds": 300
-}
-```
-
----
-
-### `POST /verify`
-Submit the decapsulated shared secret to complete the handshake.
-
-```bash
-curl -X POST http://localhost:8000/verify \
-  -H "Content-Type: application/json" \
-  -d '{
-    "challenge_id": "uuid",
-    "shared_secret_b64": "<base64 shared secret>"
-  }'
-```
-
-**Response:**
-```json
-{
-  "agent_id": "swap-agent-001",
-  "verified": true,
-  "reputation_score": 1,
-  "session_token": "<token>"
-}
-```
-
----
-
-## How an Agent Solves the Challenge (Python)
-
+### Usage
 ```python
-import oqs, base64, requests
+from bridgebase_sdk import BridgeBaseClient
 
-# Load your saved private key
-private_key_b64 = "<your stored private key>"
-private_key = base64.b64decode(private_key_b64)
+# Connect to the live Trust Layer
+client = BridgeBaseClient(gateway_url="[https://pqc-gateway-production.up.railway.app](https://pqc-gateway-production.up.railway.app)")
 
-# 1. Get challenge
-resp = requests.post("http://localhost:8000/challenge",
-                     json={"agent_id": "swap-agent-001"})
-data = resp.json()
+# 1. PQC Authentication (Full Handshake)
+session_token = client.authenticate(
+    agent_id="solana-trader-001", 
+    private_key="YOUR_PQC_PRIVATE_KEY"
+)
 
-# 2. Decapsulate ciphertext → recover shared secret
-ciphertext = base64.b64decode(data["ciphertext"])
-with oqs.KeyEncapsulation("ML-KEM-768", secret_key=private_key) as kem:
-    shared_secret = kem.decap_secret(ciphertext)
-
-# 3. Verify
-requests.post("http://localhost:8000/verify", json={
-    "challenge_id": data["challenge_id"],
-    "shared_secret_b64": base64.b64encode(shared_secret).decode(),
-})
+# 2. Execute a Gated Transaction
+if client.validate_token("solana-trader-001", session_token):
+    print("Agent verified. Transaction authorized.")
 ```
 
 ---
 
-## Deploying to Oracle Cloud Always Free
+## 🏛 Technical Stack
+- **PQC Algorithm:** ML-KEM-768 (NIST FIPS 203) via `liboqs`.
+- **Backend:** FastAPI (Python 3.14).
+- **Blockchain:** Solana Devnet (Transaction Gating + On-chain Reputation).
+- **Infrastructure:** Docker + Railway (24/7 Global Availability).
 
-```bash
-# On your Oracle ARM instance (Ubuntu 22.04)
-sudo apt install docker.io docker-compose -y
-git clone <your-repo> && cd pqc_gateway
+## 📊 Market Context
+- **The Problem:** 76% of crypto hacks in 2025 resulted from key compromises. AI agents represent a new, massive attack surface.
+- **The Solution:** BridgeBase adds a quantum-hardened identity layer, ensuring that even if a traditional wallet key is leaked, the agent must still pass a PQC handshake to move funds.
 
-# Build takes ~5 min (compiles liboqs)
-docker compose up -d --build
-
-# Open port 8000 in Oracle's security list
-```
+## 🛣 Roadmap
+- [x] Layer 1-5: Live PQC Gateway & Cloud Infrastructure
+- [x] Layer 6: Python SDK
+- [x] Layer 7: Solana On-Chain Reputation Logs
+- [ ] Layer 8: JavaScript/TypeScript SDK (for ElizaOS integration)
+- [ ] Layer 9: Enterprise API Key Management
 
 ---
 
-## Migrating from SQLite → Supabase
+**BridgeBase** — *Securing the agents of today against the threats of tomorrow.*
 
-In `database.py`, replace `sqlite3.connect(...)` with a `psycopg2` or
-`asyncpg` connection using your Supabase connection string:
-
-```
-postgresql://postgres:<password>@db.<project>.supabase.co:5432/postgres
-```
-
-Then set `DB_PATH` in docker-compose.yml to your Postgres URL.
+Contact: [bridgebaseai@gmail.com](mailto:bridgebaseai@gmail.com)

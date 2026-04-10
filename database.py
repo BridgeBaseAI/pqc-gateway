@@ -9,7 +9,7 @@ from models import AgentPassport
 
 
 class Database:
-    def __init__(self, db_path: str = "registry.db") -> None:
+    def __init__(self, db_path: str = "/app/data/registry.db") -> None:
         self.db_path = db_path
 
     def _conn(self) -> sqlite3.Connection:

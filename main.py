@@ -27,15 +27,16 @@ from models import (
     VerifyResponse,
     AgentPassport,
 )
+from gateway_middleware import issue_token, validate_token  # Layer 4
 
 # ---------------------------------------------------------------------------
 # App setup
 # ---------------------------------------------------------------------------
 
 app = FastAPI(
-    title="Quantum-Safe Agent Gateway",
+    title="BridgeBase — Quantum-Safe Agent Gateway",
     description="PQC-hardened identity layer for AI agents. Uses ML-KEM-768 (Kyber) for key encapsulation.",
-    version="0.1.0",
+    version="0.2.0",
 )
 
 app.add_middleware(
@@ -45,7 +46,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-db = Database(os.getenv("DB_PATH", "registry.db"))
+db = Database(os.getenv("DB_PATH", "/app/data/registry.db"))
 ALGORITHM = "ML-KEM-768"
 CHALLENGE_TTL_SECONDS = int(os.getenv("CHALLENGE_TTL_SECONDS", "300"))
 
@@ -69,13 +70,12 @@ def dashboard():
     html_path = Path("/app/dashboard.html")
     if html_path.exists():
         html = html_path.read_text()
-        # Inject the correct API URL so dashboard always points to itself
         html = html.replace(
             "const API = 'http://localhost:8000'",
             "const API = ''"
         )
         return HTMLResponse(content=html)
-    return HTMLResponse(content="<h1>Dashboard not found — place dashboard.html in /app</h1>", status_code=404)
+    return HTMLResponse(content="<h1>Dashboard not found</h1>", status_code=404)
 
 
 # ---------------------------------------------------------------------------
@@ -84,14 +84,14 @@ def dashboard():
 
 @app.get("/health", tags=["meta"])
 def health():
-    return {"status": "ok", "algorithm": ALGORITHM}
+    return {"status": "ok", "algorithm": ALGORITHM, "layer": 4}
 
 
 # ---------------------------------------------------------------------------
-# GET /agents — list all registered agents
+# GET /agents
 # ---------------------------------------------------------------------------
 
-@app.get("/agents", tags=["registry"], summary="List all registered agent IDs")
+@app.get("/agents", tags=["registry"])
 def list_agents():
     agents = db.list_agents()
     return {"agents": agents, "total": len(agents)}
@@ -106,7 +106,6 @@ def list_agents():
     response_model=RegisterResponse,
     status_code=status.HTTP_201_CREATED,
     tags=["identity"],
-    summary="Register a new AI agent and issue a quantum-safe passport",
 )
 def register(req: RegisterRequest) -> RegisterResponse:
     with oqs.KeyEncapsulation(ALGORITHM) as kem:
@@ -134,7 +133,7 @@ def register(req: RegisterRequest) -> RegisterResponse:
         public_key=pub_b64,
         private_key_plaintext=priv_b64,
         algorithm=ALGORITHM,
-        message="Registration successful. Store your private key securely — it will NOT be retrievable from this gateway.",
+        message="Registration successful. Store your private key securely.",
     )
 
 
@@ -142,16 +141,11 @@ def register(req: RegisterRequest) -> RegisterResponse:
 # POST /challenge
 # ---------------------------------------------------------------------------
 
-@app.post(
-    "/challenge",
-    response_model=ChallengeResponse,
-    tags=["identity"],
-    summary="Issue a PQC ciphertext challenge to verify an agent's identity",
-)
+@app.post("/challenge", response_model=ChallengeResponse, tags=["identity"])
 def challenge(req: ChallengeRequest) -> ChallengeResponse:
     passport = db.get_passport(req.agent_id)
     if passport is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Agent '{req.agent_id}' is not registered.")
+        raise HTTPException(status_code=404, detail=f"Agent '{req.agent_id}' not registered.")
 
     public_key_bytes = base64.b64decode(passport.public_key)
 
@@ -173,45 +167,42 @@ def challenge(req: ChallengeRequest) -> ChallengeResponse:
         ciphertext=base64.b64encode(ciphertext_bytes).decode(),
         algorithm=ALGORITHM,
         expires_in_seconds=CHALLENGE_TTL_SECONDS,
-        instructions="Decapsulate the ciphertext with your ML-KEM-768 private key. POST the recovered shared_secret (base64) to /verify.",
+        instructions="Decapsulate with your ML-KEM-768 private key. POST recovered secret to /verify.",
     )
 
 
 # ---------------------------------------------------------------------------
-# POST /verify
+# POST /verify  ← UPDATED: now stores session token properly
 # ---------------------------------------------------------------------------
 
-@app.post(
-    "/verify",
-    response_model=VerifyResponse,
-    tags=["identity"],
-    summary="Verify the agent solved the PQC challenge (completes the handshake)",
-)
+@app.post("/verify", response_model=VerifyResponse, tags=["identity"])
 def verify(req: VerifyRequest) -> VerifyResponse:
     record = db.get_challenge(req.challenge_id)
 
     if record is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Challenge not found.")
+        raise HTTPException(status_code=404, detail="Challenge not found.")
     if record["used"]:
-        raise HTTPException(status_code=status.HTTP_410_GONE, detail="Challenge already consumed.")
+        raise HTTPException(status_code=410, detail="Challenge already consumed.")
 
     now = datetime.now(timezone.utc).timestamp()
     if now > record["expires_at"]:
-        raise HTTPException(status_code=status.HTTP_408_REQUEST_TIMEOUT, detail="Challenge expired.")
+        raise HTTPException(status_code=408, detail="Challenge expired.")
 
     if not hmac.compare_digest(record["shared_secret_b64"], req.shared_secret_b64):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Shared secret mismatch — handshake failed.")
+        raise HTTPException(status_code=401, detail="Shared secret mismatch — handshake failed.")
 
     db.mark_challenge_used(req.challenge_id)
     new_score = db.increment_reputation(record["agent_id"])
-    session_token = base64.urlsafe_b64encode(os.urandom(32)).decode()
+
+    # Issue token via middleware (Layer 4)
+    session_token = issue_token(agent_id=record["agent_id"], reputation=new_score)
 
     return VerifyResponse(
         agent_id=record["agent_id"],
         verified=True,
         reputation_score=new_score,
         session_token=session_token,
-        message="PQC handshake successful. Session token issued.",
+        message="PQC handshake complete. Transaction gating active.",
     )
 
 
@@ -219,24 +210,53 @@ def verify(req: VerifyRequest) -> VerifyResponse:
 # GET /passport/{agent_id}
 # ---------------------------------------------------------------------------
 
-@app.get(
-    "/passport/{agent_id}",
-    response_model=AgentPassport,
-    tags=["registry"],
-    summary="Fetch an agent's public passport (no private data)",
-)
+@app.get("/passport/{agent_id}", response_model=AgentPassport, tags=["registry"])
 def get_passport(agent_id: str) -> AgentPassport:
     passport = db.get_passport(agent_id)
     if passport is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Agent '{agent_id}' not found.")
+        raise HTTPException(status_code=404, detail=f"Agent '{agent_id}' not found.")
     return passport
 
 
 # ---------------------------------------------------------------------------
-# POST /dev/solve — browser helper for dashboard handshake
+# POST /validate-token  ← NEW: Solana transaction gate
 # ---------------------------------------------------------------------------
 
 from pydantic import BaseModel as _BM
+
+class ValidateTokenRequest(_BM):
+    agent_id: str
+    session_token: str
+
+class ValidateTokenResponse(_BM):
+    cleared: bool
+    agent_id: str
+    reputation: int
+    tx_count: int
+    message: str
+
+@app.post("/validate-token", response_model=ValidateTokenResponse, tags=["layer4"])
+def validate_session_token(req: ValidateTokenRequest):
+    """
+    Transaction gate — agents must call this before any Solana transaction.
+    Returns 200 if cleared, 403 if blocked.
+    """
+    try:
+        result = validate_token(agent_id=req.agent_id, token=req.session_token)
+        return ValidateTokenResponse(
+            cleared=True,
+            agent_id=result["agent_id"],
+            reputation=result["reputation"],
+            tx_count=result["tx_count"],
+            message="Transaction authorized by BridgeBase gateway",
+        )
+    except PermissionError as e:
+        raise HTTPException(status_code=403, detail=str(e))
+
+
+# ---------------------------------------------------------------------------
+# POST /dev/solve — browser helper
+# ---------------------------------------------------------------------------
 
 class SolveRequest(_BM):
     private_key_b64: str
@@ -245,8 +265,7 @@ class SolveRequest(_BM):
 class SolveResponse(_BM):
     shared_secret_b64: str
 
-@app.post("/dev/solve", response_model=SolveResponse, tags=["dev"],
-          summary="Browser helper: decapsulate ciphertext with private key")
+@app.post("/dev/solve", response_model=SolveResponse, tags=["dev"])
 def dev_solve(req: SolveRequest) -> SolveResponse:
     private_key = base64.b64decode(req.private_key_b64)
     ciphertext  = base64.b64decode(req.ciphertext_b64)

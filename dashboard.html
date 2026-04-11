@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PQC Gateway — Command Center</title>
+<title>BridgeBase — Command Center</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
@@ -22,9 +22,7 @@
     --mono: 'Space Mono', monospace;
     --display: 'Syne', sans-serif;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   body {
     background: var(--bg);
     color: var(--text);
@@ -33,8 +31,6 @@
     min-height: 100vh;
     overflow-x: hidden;
   }
-
-  /* Grid background */
   body::before {
     content: '';
     position: fixed;
@@ -46,10 +42,8 @@
     pointer-events: none;
     z-index: 0;
   }
-
   .wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
 
-  /* Header */
   header {
     display: flex;
     align-items: flex-start;
@@ -58,54 +52,32 @@
     padding-bottom: 20px;
     border-bottom: 1px solid var(--border);
   }
-
-  .logo-block {}
-  .logo-tag {
-    font-size: 10px;
-    color: var(--accent);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-  .logo-title {
-    font-family: var(--display);
-    font-size: 28px;
-    font-weight: 800;
-    color: #fff;
-    line-height: 1;
-  }
+  .logo-tag { font-size: 10px; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 4px; }
+  .logo-title { font-family: var(--display); font-size: 28px; font-weight: 800; color: #fff; line-height: 1; }
   .logo-title span { color: var(--accent); }
-
   .status-pill {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    display: flex; align-items: center; gap: 8px;
     background: rgba(0,255,180,0.06);
     border: 1px solid var(--border2);
-    padding: 8px 16px;
-    border-radius: 100px;
-    font-size: 11px;
-    color: var(--accent);
+    padding: 8px 16px; border-radius: 100px;
+    font-size: 11px; color: var(--accent);
   }
   .pulse {
-    width: 7px; height: 7px;
-    border-radius: 50%;
+    width: 7px; height: 7px; border-radius: 50%;
     background: var(--accent);
     animation: pulse 2s ease-in-out infinite;
   }
   @keyframes pulse {
-    0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,255,180,0.4); }
-    50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(0,255,180,0); }
+    0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(0,255,180,0.4); }
+    50% { opacity:0.7; box-shadow: 0 0 0 6px rgba(0,255,180,0); }
   }
 
-  /* Stat cards */
   .stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
     margin-bottom: 28px;
   }
-
   .stat {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -113,7 +85,6 @@
     padding: 16px 18px;
     position: relative;
     overflow: hidden;
-    cursor: default;
     transition: border-color 0.2s;
   }
   .stat:hover { border-color: var(--border2); }
@@ -125,188 +96,61 @@
     background: var(--accent-line, var(--accent));
     opacity: 0.6;
   }
-
-  .stat-label {
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-  .stat-value {
-    font-family: var(--display);
-    font-size: 32px;
-    font-weight: 800;
-    color: #fff;
-    line-height: 1;
-    margin-bottom: 4px;
-  }
+  .stat-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .stat-value { font-family: var(--display); font-size: 32px; font-weight: 800; color: #fff; line-height: 1; margin-bottom: 4px; }
   .stat-sub { font-size: 11px; color: var(--muted); }
 
-  /* Tabs */
   .tabs {
-    display: flex;
-    gap: 2px;
-    margin-bottom: 20px;
+    display: flex; gap: 2px; margin-bottom: 20px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 4px;
     width: fit-content;
+    flex-wrap: wrap;
   }
   .tab {
-    padding: 8px 20px;
-    border-radius: 7px;
-    cursor: pointer;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--muted);
-    background: none;
-    border: none;
-    transition: all 0.15s;
-    letter-spacing: 0.5px;
+    padding: 8px 18px; border-radius: 7px; cursor: pointer;
+    font-family: var(--mono); font-size: 12px;
+    color: var(--muted); background: none; border: none;
+    transition: all 0.15s; letter-spacing: 0.5px;
   }
-  .tab.active {
-    background: rgba(0,255,180,0.1);
-    color: var(--accent);
-    border: 1px solid var(--border2);
-  }
+  .tab.active { background: rgba(0,255,180,0.1); color: var(--accent); border: 1px solid var(--border2); }
   .tab:hover:not(.active) { color: var(--text); }
 
-  /* Panel */
   .panel { display: none; }
   .panel.active { display: block; }
 
-  /* Agent table */
-  .table-wrap {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-
-  .table-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .table-title {
-    font-family: var(--display);
-    font-size: 14px;
-    font-weight: 700;
-    color: #fff;
-  }
-
+  .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .table-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--border); }
+  .table-title { font-family: var(--display); font-size: 14px; font-weight: 700; color: #fff; }
   .refresh-btn {
-    background: rgba(0,255,180,0.08);
-    border: 1px solid var(--border2);
-    color: var(--accent);
-    padding: 6px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: var(--mono);
-    font-size: 11px;
-    transition: all 0.15s;
+    background: rgba(0,255,180,0.08); border: 1px solid var(--border2);
+    color: var(--accent); padding: 6px 14px; border-radius: 6px;
+    cursor: pointer; font-family: var(--mono); font-size: 11px; transition: all 0.15s;
   }
   .refresh-btn:hover { background: rgba(0,255,180,0.15); }
 
   table { width: 100%; border-collapse: collapse; }
-  th {
-    text-align: left;
-    padding: 10px 18px;
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    border-bottom: 1px solid var(--border);
-    background: rgba(0,0,0,0.2);
-    font-weight: 400;
-  }
-  td {
-    padding: 13px 18px;
-    border-bottom: 1px solid rgba(0,255,180,0.05);
-    vertical-align: middle;
-  }
+  th { text-align: left; padding: 10px 18px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.2); font-weight: 400; }
+  td { padding: 13px 18px; border-bottom: 1px solid rgba(0,255,180,0.05); vertical-align: middle; }
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: rgba(0,255,180,0.03); }
 
-  .agent-id {
-    font-family: var(--mono);
-    color: var(--accent2);
-    font-size: 13px;
-  }
-  .pub-key {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--muted);
-    max-width: 160px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .score-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0,255,180,0.1);
-    border: 1px solid var(--border2);
-    color: var(--accent);
-    border-radius: 20px;
-    padding: 3px 12px;
-    font-size: 12px;
-    font-weight: 700;
-    min-width: 40px;
-  }
-  .score-badge.high {
-    background: rgba(0,255,180,0.2);
-    border-color: var(--accent);
-    color: #fff;
-  }
-
-  .algo-tag {
-    background: rgba(0,200,255,0.1);
-    border: 1px solid rgba(0,200,255,0.25);
-    color: var(--accent2);
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-size: 10px;
-    letter-spacing: 0.5px;
-  }
-
+  .agent-id { font-family: var(--mono); color: var(--accent2); font-size: 13px; }
+  .pub-key { font-family: var(--mono); font-size: 11px; color: var(--muted); max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .score-badge { display: inline-flex; align-items: center; justify-content: center; background: rgba(0,255,180,0.1); border: 1px solid var(--border2); color: var(--accent); border-radius: 20px; padding: 3px 12px; font-size: 12px; font-weight: 700; min-width: 40px; }
+  .score-badge.high { background: rgba(0,255,180,0.2); border-color: var(--accent); color: #fff; }
+  .algo-tag { background: rgba(0,200,255,0.1); border: 1px solid rgba(0,200,255,0.25); color: var(--accent2); padding: 3px 8px; border-radius: 4px; font-size: 10px; }
   .ts-text { color: var(--muted); font-size: 11px; }
 
-  /* Register panel */
   .reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 22px;
-  }
-
-  .card-title {
-    font-family: var(--display);
-    font-size: 15px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 4px;
-  }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 22px; }
+  .card-title { font-family: var(--display); font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; }
   .card-sub { color: var(--muted); font-size: 11px; margin-bottom: 18px; line-height: 1.5; }
 
-  label {
-    display: block;
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 6px;
-  }
-
-  input[type="text"], textarea {
+  label { display: block; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  input[type="text"], textarea, select {
     width: 100%;
     background: rgba(0,0,0,0.4);
     border: 1px solid var(--border);
@@ -319,124 +163,53 @@
     outline: none;
     transition: border-color 0.15s;
   }
-  input[type="text"]:focus, textarea:focus {
-    border-color: var(--border2);
-  }
+  input[type="text"]:focus, textarea:focus, select:focus { border-color: var(--border2); }
   textarea { height: 80px; resize: vertical; }
+  select option { background: var(--surface); }
 
   .btn-primary {
-    width: 100%;
-    padding: 12px;
-    background: var(--accent);
-    color: #000;
-    border: none;
-    border-radius: 6px;
-    font-family: var(--display);
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.15s;
-    letter-spacing: 0.5px;
+    width: 100%; padding: 12px;
+    background: var(--accent); color: #000;
+    border: none; border-radius: 6px;
+    font-family: var(--display); font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: all 0.15s; letter-spacing: 0.5px;
   }
   .btn-primary:hover { background: #00e0a0; }
   .btn-primary:active { transform: scale(0.98); }
   .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
 
-  /* Result box */
-  .result-box {
-    background: rgba(0,0,0,0.5);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.7;
-    min-height: 80px;
-    word-break: break-all;
+  .btn-secondary {
+    width: 100%; padding: 10px;
+    background: transparent;
+    color: var(--accent2);
+    border: 1px solid rgba(0,200,255,0.3);
+    border-radius: 6px;
+    font-family: var(--display); font-size: 13px; font-weight: 700;
+    cursor: pointer; transition: all 0.15s; margin-top: 8px;
   }
+  .btn-secondary:hover { background: rgba(0,200,255,0.08); }
+  .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .result-box { background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.7; min-height: 80px; word-break: break-all; }
   .result-box.success { border-color: var(--accent); color: var(--accent); }
   .result-box.error { border-color: var(--danger); color: var(--danger); }
+  .result-box.info { border-color: var(--accent2); color: var(--accent2); }
 
-  .key-display {
-    background: rgba(0,0,0,0.6);
-    border: 1px solid rgba(0,255,180,0.3);
-    border-radius: 8px;
-    padding: 12px;
-    font-size: 10px;
-    color: var(--accent);
-    word-break: break-all;
-    line-height: 1.6;
-    margin-top: 10px;
-    max-height: 120px;
-    overflow-y: auto;
-  }
-
-  .copy-btn {
-    margin-top: 8px;
-    background: transparent;
-    border: 1px solid var(--border2);
-    color: var(--accent);
-    padding: 5px 12px;
-    border-radius: 4px;
-    font-family: var(--mono);
-    font-size: 11px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
+  .key-display { background: rgba(0,0,0,0.6); border: 1px solid rgba(0,255,180,0.3); border-radius: 8px; padding: 12px; font-size: 10px; color: var(--accent); word-break: break-all; line-height: 1.6; margin-top: 10px; max-height: 120px; overflow-y: auto; }
+  .copy-btn { margin-top: 8px; background: transparent; border: 1px solid var(--border2); color: var(--accent); padding: 5px 12px; border-radius: 4px; font-family: var(--mono); font-size: 11px; cursor: pointer; transition: all 0.15s; }
   .copy-btn:hover { background: rgba(0,255,180,0.1); }
 
-  /* Handshake panel */
   .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
-
-  .step {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 18px;
-    position: relative;
-  }
+  .step { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
   .step.done { border-color: var(--accent); }
   .step.active-step { border-color: var(--accent2); animation: stepglow 2s ease-in-out infinite; }
-  @keyframes stepglow {
-    0%,100% { box-shadow: 0 0 0 0 rgba(0,200,255,0); }
-    50% { box-shadow: 0 0 16px rgba(0,200,255,0.2); }
-  }
-
-  .step-num {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    background: rgba(0,255,180,0.1);
-    border: 1px solid var(--border2);
-    color: var(--accent);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700;
-    margin-bottom: 10px;
-    font-family: var(--display);
-  }
+  @keyframes stepglow { 0%,100% { box-shadow: 0 0 0 0 rgba(0,200,255,0); } 50% { box-shadow: 0 0 16px rgba(0,200,255,0.2); } }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(0,255,180,0.1); border: 1px solid var(--border2); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-bottom: 10px; font-family: var(--display); }
   .step.done .step-num { background: var(--accent); color: #000; border-color: var(--accent); }
-
-  .step-label {
-    font-family: var(--display);
-    font-size: 13px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 4px;
-  }
+  .step-label { font-family: var(--display); font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
   .step-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
 
-  .log-area {
-    background: rgba(0,0,0,0.6);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px;
-    font-family: var(--mono);
-    font-size: 11px;
-    line-height: 1.9;
-    min-height: 160px;
-    max-height: 300px;
-    overflow-y: auto;
-  }
+  .log-area { background: rgba(0,0,0,0.6); border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-family: var(--mono); font-size: 11px; line-height: 1.9; min-height: 160px; max-height: 300px; overflow-y: auto; }
   .log-line { display: flex; gap: 10px; }
   .log-time { color: var(--muted); flex-shrink: 0; }
   .log-ok { color: var(--accent); }
@@ -444,42 +217,56 @@
   .log-err { color: var(--danger); }
   .log-warn { color: var(--accent3); }
 
-  .empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--muted);
-  }
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
   .empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.3; }
   .empty-text { font-family: var(--display); font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
   .empty-sub { font-size: 12px; }
 
-  /* Spinner */
   @keyframes spin { to { transform: rotate(360deg); } }
-  .spinner {
-    display: inline-block;
-    width: 12px; height: 12px;
-    border: 2px solid rgba(0,255,180,0.2);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    vertical-align: middle;
-    margin-right: 6px;
-  }
+  .spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid rgba(0,255,180,0.2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 6px; }
+
+  /* Solana tab styles */
+  .sol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .tx-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px; border-bottom: 1px solid var(--border); }
+  .tx-item:last-child { border-bottom: none; }
+  .tx-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-top: 4px; flex-shrink: 0; }
+  .tx-dot.blocked { background: var(--danger); }
+  .tx-info { flex: 1; }
+  .tx-agent { color: var(--accent2); font-size: 12px; }
+  .tx-sig { color: var(--muted); font-size: 10px; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 280px; }
+  .tx-time { color: var(--muted); font-size: 10px; flex-shrink: 0; }
+  .tx-status { font-size: 10px; padding: 2px 8px; border-radius: 4px; }
+  .tx-status.cleared { background: rgba(0,255,180,0.1); color: var(--accent); border: 1px solid var(--border2); }
+  .tx-status.blocked { background: rgba(255,77,109,0.1); color: var(--danger); border: 1px solid rgba(255,77,109,0.3); }
+
+  /* API Key tab styles */
+  .key-tier { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .tier-badge { font-size: 10px; padding: 2px 10px; border-radius: 4px; font-weight: 700; letter-spacing: 1px; }
+  .tier-badge.free { background: rgba(0,255,180,0.1); color: var(--accent); border: 1px solid var(--border2); }
+  .tier-badge.pro { background: rgba(0,200,255,0.1); color: var(--accent2); border: 1px solid rgba(0,200,255,0.3); }
+  .tier-badge.business { background: rgba(255,107,53,0.1); color: var(--accent3); border: 1px solid rgba(255,107,53,0.3); }
+  .tier-badge.enterprise { background: rgba(255,77,109,0.1); color: var(--danger); border: 1px solid rgba(255,77,109,0.3); }
+
+  .limit-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 11px; }
+  .limit-row:last-child { border-bottom: none; }
+  .limit-label { color: var(--muted); }
+  .limit-val { color: var(--text); font-weight: 700; }
+
+  .generated-key { background: rgba(0,0,0,0.6); border: 1px solid rgba(0,255,180,0.4); border-radius: 8px; padding: 14px; font-size: 11px; color: var(--accent); word-break: break-all; line-height: 1.8; margin-top: 12px; }
 
   @media (max-width: 700px) {
     .stats { grid-template-columns: 1fr 1fr; }
-    .reg-grid, .steps { grid-template-columns: 1fr; }
+    .reg-grid, .steps, .sol-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- Header -->
   <header>
     <div class="logo-block">
       <div class="logo-tag">// ml-kem-768 · nist fips 203</div>
-      <div class="logo-title">PQC <span>Gateway</span></div>
+      <div class="logo-title">BridgeBase <span>Gateway</span></div>
     </div>
     <div class="status-pill">
       <div class="pulse"></div>
@@ -487,7 +274,6 @@
     </div>
   </header>
 
-  <!-- Stats -->
   <div class="stats">
     <div class="stat" style="--accent-line: var(--accent)">
       <div class="stat-label">Registered Agents</div>
@@ -511,11 +297,12 @@
     </div>
   </div>
 
-  <!-- Tabs -->
   <div class="tabs">
     <button class="tab active" onclick="showTab('agents')">Agent Registry</button>
     <button class="tab" onclick="showTab('register')">Register Agent</button>
     <button class="tab" onclick="showTab('handshake')">Run Handshake</button>
+    <button class="tab" onclick="showTab('solana')">Solana Gating</button>
+    <button class="tab" onclick="showTab('apikeys')">API Keys</button>
   </div>
 
   <!-- PANEL: Agent Registry -->
@@ -549,7 +336,6 @@
         <input type="text" id="reg-caps" placeholder="e.g. swap, transfer, stake">
         <button class="btn-primary" id="reg-btn" onclick="registerAgent()">Generate Keypair & Register</button>
       </div>
-
       <div class="card">
         <div class="card-title">Registration Result</div>
         <div class="card-sub">Your private key is shown once below. Copy and store it offline.</div>
@@ -582,7 +368,6 @@
         <div class="step-desc">Gateway confirms match, issues session token</div>
       </div>
     </div>
-
     <div class="reg-grid" style="margin-bottom:16px">
       <div class="card">
         <div class="card-title">Agent Credentials</div>
@@ -603,19 +388,153 @@
     </div>
   </div>
 
+  <!-- PANEL: Solana Gating -->
+  <div class="panel" id="panel-solana">
+    <div class="sol-grid">
+      <div class="card">
+        <div class="card-title">Transaction Gate Test</div>
+        <div class="card-sub">Simulate a Solana transaction attempt. Agent must pass PQC handshake first or transaction is blocked.</div>
+        <label>Agent ID</label>
+        <input type="text" id="sol-agent-id" placeholder="e.g. solana-trader-001">
+        <label>Private Key (base64)</label>
+        <textarea id="sol-privkey" placeholder="Paste private key..."></textarea>
+        <label>Transaction Type</label>
+        <select id="sol-tx-type">
+          <option value="swap">Token Swap</option>
+          <option value="transfer">SOL Transfer</option>
+          <option value="stake">Stake</option>
+          <option value="nft">NFT Mint</option>
+        </select>
+        <label>Amount (SOL)</label>
+        <input type="text" id="sol-amount" placeholder="e.g. 0.1" value="0.1">
+        <button class="btn-primary" id="sol-btn" onclick="runGatedTx()">Execute Gated Transaction</button>
+        <button class="btn-secondary" id="sol-block-btn" onclick="testBlockedTx()">Test Blocked Transaction</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Gateway Log</div>
+        <div class="card-sub">Live transaction gating decisions.</div>
+        <div class="log-area" id="sol-log">
+          <div class="log-line"><span class="log-time">--:--:--</span><span class="log-info">Awaiting transaction request...</span></div>
+        </div>
+        <div style="margin-top:14px">
+          <div class="card-title" style="font-size:13px;margin-bottom:8px">Recent Transactions</div>
+          <div id="tx-history">
+            <div style="color:var(--muted);font-size:11px;padding:8px 0">No transactions yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:0">
+      <div class="card-title">How Transaction Gating Works</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px">
+        <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
+          <div style="color:var(--accent);font-size:20px;margin-bottom:6px">①</div>
+          <div style="font-family:var(--display);font-size:12px;color:#fff;margin-bottom:4px">Agent Request</div>
+          <div style="font-size:10px;color:var(--muted)">Agent wants to execute Solana transaction</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
+          <div style="color:var(--accent2);font-size:20px;margin-bottom:6px">②</div>
+          <div style="font-family:var(--display);font-size:12px;color:#fff;margin-bottom:4px">PQC Handshake</div>
+          <div style="font-size:10px;color:var(--muted)">ML-KEM-768 identity verification</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
+          <div style="color:var(--accent3);font-size:20px;margin-bottom:6px">③</div>
+          <div style="font-family:var(--display);font-size:12px;color:#fff;margin-bottom:4px">Token Issued</div>
+          <div style="font-size:10px;color:var(--muted)">Session token gates all transactions</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
+          <div style="color:var(--accent);font-size:20px;margin-bottom:6px">④</div>
+          <div style="font-family:var(--display);font-size:12px;color:#fff;margin-bottom:4px">TX Executes</div>
+          <div style="font-size:10px;color:var(--muted)">Only verified agents reach Solana</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL: API Keys -->
+  <div class="panel" id="panel-apikeys">
+    <div class="reg-grid">
+      <div class="card">
+        <div class="card-title">Generate API Key</div>
+        <div class="card-sub">Create a new API key for SDK integration. Requires admin key.</div>
+        <label>Admin Key</label>
+        <input type="text" id="admin-key-input" placeholder="Your BRIDGEBASE_ADMIN_KEY">
+        <label>Tier</label>
+        <select id="key-tier-select">
+          <option value="free">Free — 3 agents / 1,000 auths/month</option>
+          <option value="pro">Pro — 100 agents / 50,000 auths/month</option>
+          <option value="business">Business — 1,000 agents / 500,000 auths/month</option>
+          <option value="enterprise">Enterprise — Unlimited</option>
+        </select>
+        <label>Label (optional)</label>
+        <input type="text" id="key-label-input" placeholder="e.g. my-trading-bot">
+        <button class="btn-primary" id="gen-key-btn" onclick="generateApiKey()">Generate API Key</button>
+        <div id="gen-key-result" style="display:none">
+          <div class="generated-key" id="generated-key-display"></div>
+          <button class="copy-btn" onclick="copyApiKey()">Copy API Key</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Tier Limits</div>
+        <div class="card-sub">BridgeBase pricing tiers. API keys unlock higher limits.</div>
+
+        <div style="margin-bottom:16px">
+          <div class="key-tier"><span class="tier-badge free">FREE</span></div>
+          <div class="limit-row"><span class="limit-label">Agents</span><span class="limit-val">3</span></div>
+          <div class="limit-row"><span class="limit-label">Auths/month</span><span class="limit-val">1,000</span></div>
+          <div class="limit-row"><span class="limit-label">Price</span><span class="limit-val" style="color:var(--accent)">$0</span></div>
+        </div>
+
+        <div style="margin-bottom:16px">
+          <div class="key-tier"><span class="tier-badge pro">PRO</span></div>
+          <div class="limit-row"><span class="limit-label">Agents</span><span class="limit-val">100</span></div>
+          <div class="limit-row"><span class="limit-label">Auths/month</span><span class="limit-val">50,000</span></div>
+          <div class="limit-row"><span class="limit-label">Price</span><span class="limit-val" style="color:var(--accent2)">$49/mo</span></div>
+        </div>
+
+        <div style="margin-bottom:16px">
+          <div class="key-tier"><span class="tier-badge business">BUSINESS</span></div>
+          <div class="limit-row"><span class="limit-label">Agents</span><span class="limit-val">1,000</span></div>
+          <div class="limit-row"><span class="limit-label">Auths/month</span><span class="limit-val">500,000</span></div>
+          <div class="limit-row"><span class="limit-label">Price</span><span class="limit-val" style="color:var(--accent3)">$299/mo</span></div>
+        </div>
+
+        <div>
+          <div class="key-tier"><span class="tier-badge enterprise">ENTERPRISE</span></div>
+          <div class="limit-row"><span class="limit-label">Agents</span><span class="limit-val">Unlimited</span></div>
+          <div class="limit-row"><span class="limit-label">Auths/month</span><span class="limit-val">Unlimited</span></div>
+          <div class="limit-row"><span class="limit-label">Price</span><span class="limit-val" style="color:var(--danger)">$2,000+/mo</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:0">
+      <div class="card-title">SDK Integration</div>
+      <div class="card-sub" style="margin-bottom:14px">Use your API key with both Python and JavaScript SDKs.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <div style="font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:8px;text-transform:uppercase">Python SDK</div>
+          <div class="result-box" style="font-size:10px;line-height:1.8">from bridgebase_sdk import BridgeBaseClient<br><br>client = BridgeBaseClient(<br>&nbsp;&nbsp;gateway_url="https://pqc-gateway-<br>&nbsp;&nbsp;production.up.railway.app"<br>)<br>token = client.authenticate(<br>&nbsp;&nbsp;agent_id, private_key<br>)</div>
+        </div>
+        <div>
+          <div style="font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:8px;text-transform:uppercase">JavaScript SDK</div>
+          <div class="result-box" style="font-size:10px;line-height:1.8">const { BridgeBaseClient } =<br>&nbsp;&nbsp;require('bridgebase-sdk')<br><br>const client = new BridgeBaseClient()<br>const token = await client<br>&nbsp;&nbsp;.authenticate(agentId, privateKey)<br></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
 const API = '';
-let allAgents = [];
+let txHistory = [];
 
 function showTab(name) {
-  document.querySelectorAll('.tab').forEach((t,i) => {
-    t.classList.toggle('active', ['agents','register','handshake'][i] === name);
-  });
-  document.querySelectorAll('.panel').forEach((p,i) => {
-    p.classList.toggle('active', ['panel-agents','panel-register','panel-handshake'][i] === 'panel-'+name);
-  });
+  const names = ['agents','register','handshake','solana','apikeys'];
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', names[i] === name));
+  document.querySelectorAll('.panel').forEach((p,i) => p.classList.toggle('active', names[i] === name));
   if (name === 'agents') loadAgents();
 }
 
@@ -623,8 +542,8 @@ function ts() {
   return new Date().toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
 }
 
-function log(msg, type='info') {
-  const box = document.getElementById('hs-log');
+function log(boxId, msg, type='info') {
+  const box = document.getElementById(boxId);
   const line = document.createElement('div');
   line.className = 'log-line';
   line.innerHTML = `<span class="log-time">${ts()}</span><span class="log-${type}">${msg}</span>`;
@@ -647,8 +566,6 @@ async function checkHealth() {
 async function loadAgents() {
   const body = document.getElementById('agents-body');
   body.innerHTML = `<div class="empty-state"><div class="spinner"></div> Fetching agents...</div>`;
-
-  // Fetch all agents from the real /agents endpoint
   let agentIds = [];
   try {
     const listR = await fetch(`${API}/agents`);
@@ -664,18 +581,12 @@ async function loadAgents() {
     } catch(e) {}
   }
 
-  // Update stat
   document.getElementById('stat-agents').textContent = results.length;
   const totalScore = results.reduce((s,a) => s + (a.reputation_score||0), 0);
   document.getElementById('stat-handshakes').textContent = totalScore;
 
   if (results.length === 0) {
-    body.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">◈</div>
-        <div class="empty-text">No agents registered yet</div>
-        <div class="empty-sub">Go to Register Agent tab to create your first quantum-safe agent</div>
-      </div>`;
+    body.innerHTML = `<div class="empty-state"><div class="empty-icon">◈</div><div class="empty-text">No agents registered yet</div><div class="empty-sub">Go to Register Agent tab to create your first quantum-safe agent</div></div>`;
     return;
   }
 
@@ -686,27 +597,15 @@ async function loadAgents() {
       <td><span class="algo-tag">ML-KEM-768</span></td>
       <td><span class="score-badge ${a.reputation_score >= 5 ? 'high' : ''}">${a.reputation_score}</span></td>
       <td class="ts-text">${new Date(a.registered_at).toLocaleDateString()}</td>
-    </tr>
-  `).join('');
+    </tr>`).join('');
 
-  body.innerHTML = `
-    <table>
-      <thead><tr>
-        <th>Agent ID</th>
-        <th>Public Key</th>
-        <th>Algorithm</th>
-        <th>Reputation</th>
-        <th>Registered</th>
-      </tr></thead>
-      <tbody>${rows}</tbody>
-    </table>`;
+  body.innerHTML = `<table><thead><tr><th>Agent ID</th><th>Public Key</th><th>Algorithm</th><th>Reputation</th><th>Registered</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 async function registerAgent() {
   const id = document.getElementById('reg-id').value.trim();
   const owner = document.getElementById('reg-owner').value.trim();
   const caps = document.getElementById('reg-caps').value.split(',').map(s=>s.trim()).filter(Boolean);
-
   if (!id) { alert('Agent ID is required'); return; }
 
   const btn = document.getElementById('reg-btn');
@@ -723,17 +622,10 @@ async function registerAgent() {
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ agent_id: id, metadata: { owner, capabilities: caps } })
     });
-
     const data = await r.json();
-
     if (r.status === 201) {
-      // Store agent id for registry
-      const stored = JSON.parse(localStorage.getItem('pqc_agents') || '[]');
-      if (!stored.includes(id)) { stored.push(id); localStorage.setItem('pqc_agents', JSON.stringify(stored)); }
-
       result.className = 'result-box success';
       result.textContent = `✓ Agent "${data.agent_id}" registered with ML-KEM-768\n✓ Public key stored in gateway registry\n⚠ Copy your private key now — it will not be shown again`;
-
       document.getElementById('key-section').style.display = 'block';
       document.getElementById('priv-key-display').textContent = data.private_key_plaintext;
     } else if (r.status === 409) {
@@ -745,9 +637,8 @@ async function registerAgent() {
     }
   } catch(e) {
     result.className = 'result-box error';
-    result.textContent = 'Cannot reach gateway. Is Docker running?\nRun: docker compose up';
+    result.textContent = 'Cannot reach gateway.';
   }
-
   btn.disabled = false;
   btn.textContent = 'Generate Keypair & Register';
 }
@@ -764,106 +655,265 @@ function copyKey() {
 async function runHandshake() {
   const agentId = document.getElementById('hs-id').value.trim();
   const privKeyB64 = document.getElementById('hs-privkey').value.trim();
-
   if (!agentId || !privKeyB64) { alert('Agent ID and private key required'); return; }
 
   const btn = document.getElementById('hs-btn');
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>Running...';
 
-  // Reset steps
   ['step1','step2','step3'].forEach(id => {
     document.getElementById(id).className = 'step';
     document.getElementById(id).querySelector('.step-num').textContent = id.slice(-1);
   });
-
   document.getElementById('hs-log').innerHTML = '';
-  log(`Starting PQC handshake for agent: ${agentId}`, 'info');
+  log('hs-log', `Starting PQC handshake for agent: ${agentId}`, 'info');
 
   try {
-    // Step 1: Challenge
     document.getElementById('step1').className = 'step active-step';
-    log('→ POST /challenge', 'info');
+    log('hs-log', '→ POST /challenge', 'info');
     const cr = await fetch(`${API}/challenge`, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
+      method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ agent_id: agentId })
     });
-
     if (!cr.ok) {
       const e = await cr.json();
-      log(`✗ Challenge failed: ${e.detail || cr.status}`, 'err');
-      document.getElementById('step1').className = 'step';
-      btn.disabled = false; btn.textContent = 'Run Full Handshake';
-      return;
+      log('hs-log', `✗ Challenge failed: ${e.detail || cr.status}`, 'err');
+      btn.disabled = false; btn.textContent = 'Run Full Handshake'; return;
     }
-
     const cd = await cr.json();
-    log(`✓ Challenge issued: ${cd.challenge_id.slice(0,16)}...`, 'ok');
-    log(`✓ Ciphertext received: ${cd.ciphertext.slice(0,20)}...`, 'ok');
-    log(`  Expires in: ${cd.expires_in_seconds}s`, 'info');
+    log('hs-log', `✓ Challenge issued: ${cd.challenge_id.slice(0,16)}...`, 'ok');
     document.getElementById('step1').className = 'step done';
     document.getElementById('step1').querySelector('.step-num').textContent = '✓';
 
-    // Step 2: The browser can't run oqs natively, so we call a helper endpoint
     document.getElementById('step2').className = 'step active-step';
-    log('→ Decapsulating ciphertext with private key...', 'info');
-    log('  (Calling /dev/solve — gateway-side for browser demo)', 'warn');
-
-    // We use a special solve endpoint we'll add to main.py
+    log('hs-log', '→ Decapsulating ciphertext...', 'info');
     const sr = await fetch(`${API}/dev/solve`, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
+      method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ private_key_b64: privKeyB64, ciphertext_b64: cd.ciphertext })
     });
-
     if (!sr.ok) {
-      log('✗ Decapsulation failed — check private key', 'err');
-      document.getElementById('step2').className = 'step';
-      btn.disabled = false; btn.textContent = 'Run Full Handshake';
-      return;
+      log('hs-log', '✗ Decapsulation failed — check private key', 'err');
+      btn.disabled = false; btn.textContent = 'Run Full Handshake'; return;
     }
-
     const sd = await sr.json();
-    log(`✓ Shared secret recovered: ${sd.shared_secret_b64.slice(0,20)}...`, 'ok');
-    log('  Private key processed — secret stays local in production', 'warn');
+    log('hs-log', `✓ Shared secret recovered`, 'ok');
     document.getElementById('step2').className = 'step done';
     document.getElementById('step2').querySelector('.step-num').textContent = '✓';
 
-    // Step 3: Verify
     document.getElementById('step3').className = 'step active-step';
-    log('→ POST /verify', 'info');
-
+    log('hs-log', '→ POST /verify', 'info');
     const vr = await fetch(`${API}/verify`, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
+      method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ challenge_id: cd.challenge_id, shared_secret_b64: sd.shared_secret_b64 })
     });
-
     const vd = await vr.json();
-
     if (vd.verified) {
-      log(`✓ VERIFIED — PQC handshake complete`, 'ok');
-      log(`✓ Reputation score: ${vd.reputation_score}`, 'ok');
-      log(`✓ Session token: ${vd.session_token.slice(0,20)}...`, 'ok');
+      log('hs-log', `✓ VERIFIED — PQC handshake complete`, 'ok');
+      log('hs-log', `✓ Reputation score: ${vd.reputation_score}`, 'ok');
+      log('hs-log', `✓ Session token: ${vd.session_token.slice(0,20)}...`, 'ok');
       document.getElementById('step3').className = 'step done';
       document.getElementById('step3').querySelector('.step-num').textContent = '✓';
-
-      // Update stat
-      const stored = JSON.parse(localStorage.getItem('pqc_agents') || '[]');
-      if (!stored.includes(agentId)) { stored.push(agentId); localStorage.setItem('pqc_agents', JSON.stringify(stored)); }
     } else {
-      log('✗ Verification failed', 'err');
-      document.getElementById('step3').className = 'step';
+      log('hs-log', '✗ Verification failed', 'err');
+    }
+  } catch(e) {
+    log('hs-log', `✗ Error: ${e.message}`, 'err');
+  }
+  btn.disabled = false;
+  btn.textContent = 'Run Full Handshake';
+}
+
+// ---- Solana Tab ----
+
+function addTxHistory(agentId, status, txType, amount) {
+  txHistory.unshift({ agentId, status, txType, amount, time: ts() });
+  if (txHistory.length > 10) txHistory.pop();
+  renderTxHistory();
+}
+
+function renderTxHistory() {
+  const el = document.getElementById('tx-history');
+  if (txHistory.length === 0) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:11px;padding:8px 0">No transactions yet</div>';
+    return;
+  }
+  el.innerHTML = txHistory.map(tx => `
+    <div class="tx-item">
+      <div class="tx-dot ${tx.status === 'blocked' ? 'blocked' : ''}"></div>
+      <div class="tx-info">
+        <div class="tx-agent">${tx.agentId} — ${tx.txType} ${tx.amount} SOL</div>
+        <div class="tx-sig">${tx.status === 'cleared' ? 'Gateway authorized' : 'Gateway blocked — no valid PQC token'}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+        <span class="tx-status ${tx.status}">${tx.status.toUpperCase()}</span>
+        <span class="tx-time">${tx.time}</span>
+      </div>
+    </div>`).join('');
+}
+
+async function runGatedTx() {
+  const agentId = document.getElementById('sol-agent-id').value.trim();
+  const privKey = document.getElementById('sol-privkey').value.trim();
+  const txType = document.getElementById('sol-tx-type').value;
+  const amount = document.getElementById('sol-amount').value.trim() || '0.1';
+
+  if (!agentId || !privKey) { alert('Agent ID and private key required'); return; }
+
+  const btn = document.getElementById('sol-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Processing...';
+  document.getElementById('sol-log').innerHTML = '';
+
+  log('sol-log', `Agent: ${agentId}`, 'info');
+  log('sol-log', `TX: ${txType} ${amount} SOL on Solana devnet`, 'info');
+  log('sol-log', '→ Step 1: PQC handshake required...', 'info');
+
+  try {
+    // Challenge
+    const cr = await fetch(`${API}/challenge`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ agent_id: agentId })
+    });
+    if (!cr.ok) {
+      const e = await cr.json();
+      log('sol-log', `✗ ${e.detail}`, 'err');
+      addTxHistory(agentId, 'blocked', txType, amount);
+      btn.disabled = false; btn.textContent = 'Execute Gated Transaction'; return;
+    }
+    const cd = await cr.json();
+    log('sol-log', '✓ Challenge received', 'ok');
+
+    // Solve
+    const sr = await fetch(`${API}/dev/solve`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ private_key_b64: privKey, ciphertext_b64: cd.ciphertext })
+    });
+    if (!sr.ok) {
+      log('sol-log', '✗ Decapsulation failed — invalid private key', 'err');
+      addTxHistory(agentId, 'blocked', txType, amount);
+      btn.disabled = false; btn.textContent = 'Execute Gated Transaction'; return;
+    }
+    const sd = await sr.json();
+    log('sol-log', '✓ Secret decapsulated', 'ok');
+
+    // Verify
+    const vr = await fetch(`${API}/verify`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ challenge_id: cd.challenge_id, shared_secret_b64: sd.shared_secret_b64 })
+    });
+    const vd = await vr.json();
+    if (!vd.verified) {
+      log('sol-log', '✗ Verification failed', 'err');
+      addTxHistory(agentId, 'blocked', txType, amount);
+      btn.disabled = false; btn.textContent = 'Execute Gated Transaction'; return;
+    }
+    log('sol-log', `✓ PQC identity verified — reputation: ${vd.reputation_score}`, 'ok');
+    log('sol-log', '→ Step 2: Validating session token...', 'info');
+
+    // Validate token
+    const tr = await fetch(`${API}/validate-token`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ agent_id: agentId, session_token: vd.session_token })
+    });
+    const td = await tr.json();
+    if (!td.cleared) {
+      log('sol-log', '✗ Token rejected', 'err');
+      addTxHistory(agentId, 'blocked', txType, amount);
+      btn.disabled = false; btn.textContent = 'Execute Gated Transaction'; return;
     }
 
+    log('sol-log', '✓ Gateway cleared — token valid', 'ok');
+    log('sol-log', `→ Step 3: Submitting to Solana devnet...`, 'info');
+    await new Promise(r => setTimeout(r, 800));
+    log('sol-log', `✓ Transaction submitted: ${txType} ${amount} SOL`, 'ok');
+    log('sol-log', `✓ TX authorized by BridgeBase gateway`, 'ok');
+    log('sol-log', `✓ TX count this session: ${td.tx_count}`, 'ok');
+    addTxHistory(agentId, 'cleared', txType, amount);
+
   } catch(e) {
-    log(`✗ Error: ${e.message}`, 'err');
-    log('  Is Docker running? Run: docker compose up', 'warn');
+    log('sol-log', `✗ Error: ${e.message}`, 'err');
+  }
+  btn.disabled = false;
+  btn.textContent = 'Execute Gated Transaction';
+}
+
+async function testBlockedTx() {
+  const agentId = document.getElementById('sol-agent-id').value.trim() || 'unknown-agent';
+  const txType = document.getElementById('sol-tx-type').value;
+  const amount = document.getElementById('sol-amount').value.trim() || '0.1';
+
+  document.getElementById('sol-log').innerHTML = '';
+  log('sol-log', `Testing blocked transaction for: ${agentId}`, 'warn');
+  log('sol-log', '→ Attempting TX without valid session token...', 'warn');
+  await new Promise(r => setTimeout(r, 600));
+
+  const r = await fetch(`${API}/validate-token`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ agent_id: agentId, session_token: 'invalid-token-test' })
+  });
+
+  if (r.status === 403) {
+    const d = await r.json();
+    log('sol-log', `✓ BLOCKED: ${d.detail}`, 'err');
+    log('sol-log', '✓ Transaction rejected — no valid PQC token', 'err');
+    log('sol-log', '✓ Security working correctly', 'ok');
+    addTxHistory(agentId, 'blocked', txType, amount);
+  }
+}
+
+// ---- API Keys Tab ----
+
+async function generateApiKey() {
+  const adminKey = document.getElementById('admin-key-input').value.trim();
+  const tier = document.getElementById('key-tier-select').value;
+  const label = document.getElementById('key-label-input').value.trim();
+
+  if (!adminKey) { alert('Admin key required'); return; }
+
+  const btn = document.getElementById('gen-key-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Generating...';
+
+  try {
+    const r = await fetch(`${API}/admin/create-key`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${adminKey}`
+      },
+      body: JSON.stringify({ tier, label })
+    });
+
+    const data = await r.json();
+
+    if (r.ok) {
+      document.getElementById('gen-key-result').style.display = 'block';
+      document.getElementById('generated-key-display').innerHTML =
+        `<strong>API Key:</strong> ${data.api_key}<br>` +
+        `<strong>Tier:</strong> ${data.tier}<br>` +
+        `<strong>Agents:</strong> ${data.limits.agents}<br>` +
+        `<strong>Auths/month:</strong> ${data.limits.auths_per_month}<br><br>` +
+        `⚠ Store this key securely — not shown again.`;
+    } else {
+      alert(`Error: ${data.detail}`);
+    }
+  } catch(e) {
+    alert(`Cannot reach gateway: ${e.message}`);
   }
 
   btn.disabled = false;
-  btn.textContent = 'Run Full Handshake';
+  btn.textContent = 'Generate API Key';
+}
+
+function copyApiKey() {
+  const text = document.getElementById('generated-key-display').textContent;
+  const keyMatch = text.match(/bb_\w+/);
+  if (keyMatch) {
+    navigator.clipboard.writeText(keyMatch[0]).then(() => {
+      const btn = document.querySelectorAll('.copy-btn')[1];
+      if (btn) { btn.textContent = '✓ Copied!'; setTimeout(() => btn.textContent = 'Copy API Key', 2000); }
+    });
+  }
 }
 
 // Init

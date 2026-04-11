@@ -1,76 +1,117 @@
-#  BridgeBaseAI
+# BridgeBase SDK
+
 **The Trust Layer for the Agentic Economy**
 
-[![Live Demo](https://img.shields.io/badge/Live-Railway-00ff00?style=for-the-badge)](https://pqc-gateway-production.up.railway.app)
-[![SDK](https://img.shields.io/badge/SDK-Python-blue?style=for-the-badge)](https://github.com/BridgeBaseAI/pqc-gateway)
-[![Algorithm](https://img.shields.io/badge/PQC-ML--KEM--768-green?style=for-the-badge)](https://csrc.nist.gov/pubs/fips/203/ipd)
+Quantum-safe identity and transaction gating for AI agents. Uses ML-KEM-768 (NIST FIPS 203) post-quantum cryptography.
 
-## 1 Overview
-BridgeBase is a **Quantum-Safe AI Agent Gateway** designed to secure the "Agentic Economy." As AI agents increasingly manage treasury wallets and execute on-chain swaps, standard ECDSA/Ed25519 signatures are vulnerable to future quantum threats. 
+## Install
 
-BridgeBase introduces the **"Quantum Tax"**: a mandatory Post-Quantum Cryptographic (PQC) handshake that AI agents must pass before they are authorized to sign or broadcast blockchain transactions.
-
-## 2 The Architecture
-BridgeBase sits between the **AI Agent** and the **Blockchain (Solana)**.
-
-1. **Identity:** Agents register with a NIST-standard ML-KEM-768 public key.
-2. **Challenge:** When an agent wants to act, BridgeBase issues a PQC ciphertext challenge.
-3. **Verification:** The agent must decapsulate the secret using its private PQC key.
-4. **Gating:** Once verified, the gateway issues a 3600s session token. No token = No transaction.
-
----
-
-## 3 Quick Start (Python SDK)
-
-Secure your agent in seconds.
-
-### Installation
 ```bash
-# Clone the repository
-git clone [https://github.com/BridgeBaseAI/pqc-gateway.git](https://github.com/BridgeBaseAI/pqc-gateway.git)
-cd pqc-gateway
-pip install -r requirements.txt
+npm install bridgebase-sdk
 ```
 
-### Usage
-```python
-from bridgebase_sdk import BridgeBaseClient
+## Quick Start
 
-# Connect to the live Trust Layer
-client = BridgeBaseClient(gateway_url="[https://pqc-gateway-production.up.railway.app](https://pqc-gateway-production.up.railway.app)")
+```javascript
+const { BridgeBaseClient } = require('bridgebase-sdk')
 
-# 1. PQC Authentication (Full Handshake)
-session_token = client.authenticate(
-    agent_id="solana-trader-001", 
-    private_key="YOUR_PQC_PRIVATE_KEY"
-)
+const client = new BridgeBaseClient()
 
-# 2. Execute a Gated Transaction
-if client.validate_token("solana-trader-001", session_token):
-    print("Agent verified. Transaction authorized.")
+// Register agent (run once, save private key)
+const result = await client.register('my-agent-001')
+const privateKey = result.privateKey  // SAVE THIS
+
+// Authenticate (run every session)
+const token = await client.authenticate('my-agent-001', privateKey)
+
+// Gate a transaction
+const cleared = await client.validateToken('my-agent-001', token)
+// true = cleared, throws BridgeBaseError if blocked
 ```
 
----
+## Why BridgeBase
 
-## 4 Technical Stack
-- **PQC Algorithm:** ML-KEM-768 (NIST FIPS 203) via `liboqs`.
-- **Backend:** FastAPI (Python 3.14).
-- **Blockchain:** Solana Devnet (Transaction Gating + On-chain Reputation).
-- **Infrastructure:** Docker + Railway (24/7 Global Availability).
+- **$2.87B** in crypto hacks in 2025 — 76% from key compromises
+- **Quantum computers** will break current encryption within years
+- **ML-KEM-768** is the NIST FIPS 203 standard — quantum-proof today
+- **No other solution** combines AI agent identity + blockchain + PQC
 
-## 5 Market Context
-- **The Problem:** 76% of crypto hacks in 2025 resulted from key compromises. AI agents represent a new, massive attack surface.
-- **The Solution:** BridgeBase adds a quantum-hardened identity layer, ensuring that even if a traditional wallet key is leaked, the agent must still pass a PQC handshake to move funds.
+## API
 
-## 6 Roadmap
-- [x] Layer 1-5: Live PQC Gateway & Cloud Infrastructure
-- [x] Layer 6: Python SDK
-- [x] Layer 7: Solana On-Chain Reputation Logs
-- [ ] Layer 8: JavaScript/TypeScript SDK (for ElizaOS integration)
-- [ ] Layer 9: Enterprise API Key Management
+### `new BridgeBaseClient(options?)`
 
----
+| Option | Default | Description |
+|---|---|---|
+| `gatewayUrl` | `https://pqc-gateway-production.up.railway.app` | Gateway URL |
+| `timeout` | `30000` | Request timeout in ms |
 
-**BridgeBaseAI** — *Securing the agents of today against the threats of tomorrow.*
+### `client.register(agentId, metadata?)`
 
-Contact: [bridgebaseai@gmail.com](mailto:bridgebaseai@gmail.com)
+Register a new agent. Returns `{ agentId, publicKey, privateKey, algorithm }`.
+
+**Save the private key — it is never stored by the gateway.**
+
+### `client.authenticate(agentId, privateKey)`
+
+Full 3-step ML-KEM-768 handshake. Returns session token.
+
+### `client.validateToken(agentId, sessionToken)`
+
+Gate a transaction. Returns `true` if cleared, throws `BridgeBaseError` (403) if blocked.
+
+### `client.getPassport(agentId)`
+
+Returns `{ agentId, publicKey, reputationScore, registeredAt, metadata }`.
+
+### `client.listAgents()`
+
+Returns array of registered agent IDs.
+
+### `client.reputation(agentId)`
+
+Returns agent reputation score (increments on every successful handshake).
+
+### `client.health()`
+
+Returns `{ status, algorithm }`.
+
+## ElizaOS Integration
+
+```javascript
+const { BridgeBaseClient } = require('bridgebase-sdk')
+
+const bridge = new BridgeBaseClient()
+
+// In your ElizaOS agent action:
+async function secureAction(agentId, privateKey) {
+  const token = await bridge.authenticate(agentId, privateKey)
+  const cleared = await bridge.validateToken(agentId, token)
+  if (cleared) {
+    // Execute your Solana transaction
+  }
+}
+```
+
+## Error Handling
+
+```javascript
+const { BridgeBaseClient, BridgeBaseError } = require('bridgebase-sdk')
+
+try {
+  const cleared = await client.validateToken(agentId, token)
+} catch (err) {
+  if (err instanceof BridgeBaseError && err.statusCode === 403) {
+    console.log('Transaction blocked — invalid token')
+  }
+}
+```
+
+## Links
+
+- **Gateway:** https://pqc-gateway-production.up.railway.app
+- **GitHub:** https://github.com/BridgeBaseAI/pqc-gateway
+- **Docs:** https://pqc-gateway-production.up.railway.app/docs
+
+## License
+
+MIT

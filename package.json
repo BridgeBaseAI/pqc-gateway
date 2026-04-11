@@ -1,0 +1,26 @@
+{
+  "name": "bridgebase-sdk",
+  "version": "1.0.1",
+  "description": "The Trust Layer for the Agentic Economy — Quantum-Safe AI Agent Gateway SDK",
+  "main": "bridgebase-sdk.js",
+  "exports": {
+    ".": {
+      "import": "./bridgebase-sdk.js",
+      "require": "./bridgebase-sdk.js"
+    }
+  },
+  "scripts": {
+    "test": "node test_sdk.js"
+  },
+  "keywords": [
+    "ai-agent", "quantum-safe", "pqc", "ml-kem", "gateway",
+    "web3", "solana", "elizaos", "virtuals", "security"
+  ],
+  "author": "BridgeBase <bridgebaseai@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BridgeBaseAI/pqc-gateway"
+  },
+  "homepage": "https://pqc-gateway-production.up.railway.app"
+}

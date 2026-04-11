@@ -1,0 +1,7 @@
+# Exclude everything except the SDK
+*
+
+# Allow only what's needed
+!bridgebase-sdk.js
+!package.json
+!README.md

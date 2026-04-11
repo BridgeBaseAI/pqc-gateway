@@ -1198,7 +1198,7 @@ async function loadSolanaWeb3() {
   if (window.solanaWeb3) return window.solanaWeb3;
   return new Promise((resolve) => {
     const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/solana-web3.js/1.87.6/index.iife.min.js';
+    script.src = 'https://unpkg.com/@solana/web3.js@1.87.6/lib/index.iife.min.js';
     script.onload = () => { window.solanaWeb3 = window.solanaWeb3 || window.solana; resolve(window.solanaWeb3); };
     script.onerror = () => resolve(null);
     document.head.appendChild(script);

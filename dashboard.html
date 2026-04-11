@@ -52,13 +52,9 @@
     padding-bottom: 20px;
     border-bottom: 1px solid var(--border);
   }
-  .logo-block { display: flex; flex-direction: column; gap: 4px; }
   .logo-tag { font-size: 10px; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 4px; }
   .logo-title { font-family: var(--display); font-size: 28px; font-weight: 800; color: #fff; line-height: 1; }
   .logo-title span { color: var(--accent); }
-  .logo-sub { font-size: 11px; color: var(--muted); letter-spacing: 0.5px; margin-top: 4px; }
-
-  .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
   .status-pill {
     display: flex; align-items: center; gap: 8px;
     background: rgba(0,255,180,0.06);
@@ -75,14 +71,6 @@
     0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(0,255,180,0.4); }
     50% { opacity:0.7; box-shadow: 0 0 0 6px rgba(0,255,180,0); }
   }
-  .social-links { display: flex; gap: 8px; }
-  .social-link {
-    font-size: 10px; color: var(--muted); text-decoration: none;
-    letter-spacing: 1px; border: 1px solid var(--border);
-    padding: 4px 12px; border-radius: 4px;
-    transition: color 0.2s, border-color 0.2s;
-  }
-  .social-link:hover { color: var(--accent); border-color: var(--border2); }
 
   .stats {
     display: grid;
@@ -136,7 +124,6 @@
   .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
   .table-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--border); }
   .table-title { font-family: var(--display); font-size: 14px; font-weight: 700; color: #fff; }
-  .table-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
   .refresh-btn {
     background: rgba(0,255,180,0.08); border: 1px solid var(--border2);
     color: var(--accent); padding: 6px 14px; border-radius: 6px;
@@ -156,14 +143,6 @@
   .score-badge.high { background: rgba(0,255,180,0.2); border-color: var(--accent); color: #fff; }
   .algo-tag { background: rgba(0,200,255,0.1); border: 1px solid rgba(0,200,255,0.25); color: var(--accent2); padding: 3px 8px; border-radius: 4px; font-size: 10px; }
   .ts-text { color: var(--muted); font-size: 11px; }
-  .passport-btn {
-    font-size: 10px; padding: 4px 10px; border-radius: 4px;
-    background: transparent; border: 1px solid var(--border);
-    color: var(--muted); cursor: pointer; font-family: var(--mono);
-    text-decoration: none; display: inline-block;
-    transition: all 0.15s; letter-spacing: 0.5px;
-  }
-  .passport-btn:hover { border-color: var(--accent); color: var(--accent); }
 
   .reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 22px; }
@@ -171,7 +150,7 @@
   .card-sub { color: var(--muted); font-size: 11px; margin-bottom: 18px; line-height: 1.5; }
 
   label { display: block; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-  input[type="text"], input[type="number"], textarea, select {
+  input[type="text"], textarea, select {
     width: 100%;
     background: rgba(0,0,0,0.4);
     border: 1px solid var(--border);
@@ -184,7 +163,7 @@
     outline: none;
     transition: border-color 0.15s;
   }
-  input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus { border-color: var(--border2); }
+  input[type="text"]:focus, textarea:focus, select:focus { border-color: var(--border2); }
   textarea { height: 80px; resize: vertical; }
   select option { background: var(--surface); }
 
@@ -246,6 +225,7 @@
   @keyframes spin { to { transform: rotate(360deg); } }
   .spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid rgba(0,255,180,0.2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 6px; }
 
+  /* Solana tab styles */
   .sol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
   .tx-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px; border-bottom: 1px solid var(--border); }
   .tx-item:last-child { border-bottom: none; }
@@ -259,6 +239,7 @@
   .tx-status.cleared { background: rgba(0,255,180,0.1); color: var(--accent); border: 1px solid var(--border2); }
   .tx-status.blocked { background: rgba(255,77,109,0.1); color: var(--danger); border: 1px solid rgba(255,77,109,0.3); }
 
+  /* API Key tab styles */
   .key-tier { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
   .tier-badge { font-size: 10px; padding: 2px 10px; border-radius: 4px; font-weight: 700; letter-spacing: 1px; }
   .tier-badge.free { background: rgba(0,255,180,0.1); color: var(--accent); border: 1px solid var(--border2); }
@@ -270,33 +251,12 @@
   .limit-row:last-child { border-bottom: none; }
   .limit-label { color: var(--muted); }
   .limit-val { color: var(--text); font-weight: 700; }
+
   .generated-key { background: rgba(0,0,0,0.6); border: 1px solid rgba(0,255,180,0.4); border-radius: 8px; padding: 14px; font-size: 11px; color: var(--accent); word-break: break-all; line-height: 1.8; margin-top: 12px; }
-
-  .footer {
-    margin-top: 40px;
-    padding: 20px 0;
-    border-top: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 10px;
-    color: var(--muted);
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .footer-left { line-height: 1.9; }
-  .footer-left strong { color: var(--text); }
-  .footer-right { text-align: right; line-height: 1.9; }
-  .footer a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
-  .footer a:hover { color: var(--accent); }
-
-  .code-kw { color: var(--accent); }
-  .code-str { color: #88cc88; }
 
   @media (max-width: 700px) {
     .stats { grid-template-columns: 1fr 1fr; }
     .reg-grid, .steps, .sol-grid { grid-template-columns: 1fr; }
-    .social-links { display: none; }
   }
 </style>
 </head>
@@ -307,19 +267,10 @@
     <div class="logo-block">
       <div class="logo-tag">// ml-kem-768 · nist fips 203</div>
       <div class="logo-title">BridgeBase <span>Gateway</span></div>
-      <div class="logo-sub">The Trust Layer for the Agentic Economy</div>
     </div>
-    <div class="header-right">
-      <div class="status-pill">
-        <div class="pulse"></div>
-        <span id="gateway-status">Connecting...</span>
-      </div>
-      <div class="social-links">
-        <a class="social-link" href="https://github.com/BridgeBaseAI/pqc-gateway" target="_blank">GitHub</a>
-        <a class="social-link" href="https://twitter.com/BridgeBaseAI" target="_blank">@BridgeBaseAI</a>
-        <a class="social-link" href="https://www.npmjs.com/package/bridgebase-sdk" target="_blank">npm</a>
-        <a class="social-link" href="mailto:bridgebaseai@gmail.com">Contact</a>
-      </div>
+    <div class="status-pill">
+      <div class="pulse"></div>
+      <span id="gateway-status">Connecting...</span>
     </div>
   </header>
 
@@ -352,17 +303,15 @@
     <button class="tab" onclick="showTab('handshake')">Run Handshake</button>
     <button class="tab" onclick="showTab('solana')">Solana Gating</button>
     <button class="tab" onclick="showTab('apikeys')">API Keys</button>
+    <button class="tab" onclick="showTab('pricing')" style="color:#ffd700;border:1px solid rgba(255,215,0,0.3)">⚡ Beta Access</button>
   </div>
 
   <!-- PANEL: Agent Registry -->
   <div class="panel active" id="panel-agents">
     <div class="table-wrap">
       <div class="table-header">
-        <div>
-          <div class="table-title">Registered Agents</div>
-          <div class="table-sub">Every agent holds an ML-KEM-768 quantum-safe keypair</div>
-        </div>
-        <button class="refresh-btn" onclick="loadAgents()">Refresh</button>
+        <div class="table-title">Registered Agents</div>
+        <button class="refresh-btn" onclick="loadAgents()">↻ Refresh</button>
       </div>
       <div id="agents-body">
         <div class="empty-state">
@@ -393,10 +342,9 @@
         <div class="card-sub">Your private key is shown once below. Copy and store it offline.</div>
         <div class="result-box" id="reg-result">Awaiting registration...</div>
         <div id="key-section" style="display:none">
-          <label style="margin-top:14px">Private Key (one-time — save now)</label>
+          <label style="margin-top:14px">Private Key (ONE-TIME — save now)</label>
           <div class="key-display" id="priv-key-display"></div>
           <button class="copy-btn" onclick="copyKey()">Copy Private Key</button>
-          <div id="passport-link-reg" style="margin-top:12px;font-size:11px;color:var(--muted)"></div>
         </div>
       </div>
     </div>
@@ -459,7 +407,7 @@
           <option value="nft">NFT Mint</option>
         </select>
         <label>Amount (SOL)</label>
-        <input type="number" id="sol-amount" placeholder="e.g. 0.1" value="0.1" step="0.01">
+        <input type="text" id="sol-amount" placeholder="e.g. 0.1" value="0.1">
         <button class="btn-primary" id="sol-btn" onclick="runGatedTx()">Execute Gated Transaction</button>
         <button class="btn-secondary" id="sol-block-btn" onclick="testBlockedTx()">Test Blocked Transaction</button>
       </div>
@@ -481,22 +429,22 @@
       <div class="card-title">How Transaction Gating Works</div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px">
         <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
-          <div style="color:var(--accent);font-size:18px;font-weight:700;margin-bottom:6px;font-family:var(--display)">01</div>
+          <div style="color:var(--accent);font-size:20px;margin-bottom:6px">①</div>
           <div style="font-family:var(--display);font-size:12px;color:#fff;margin-bottom:4px">Agent Request</div>
           <div style="font-size:10px;color:var(--muted)">Agent wants to execute Solana transaction</div>
         </div>
         <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
-          <div style="color:var(--accent2);font-size:18px;font-weight:700;margin-bottom:6px;font-family:var(--display)">02</div>
+          <div style="color:var(--accent2);font-size:20px;margin-bottom:6px">②</div>
           <div style="font-family:var(--display);font-size:12px;color:#fff;margin-bottom:4px">PQC Handshake</div>
           <div style="font-size:10px;color:var(--muted)">ML-KEM-768 identity verification</div>
         </div>
         <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
-          <div style="color:var(--accent3);font-size:18px;font-weight:700;margin-bottom:6px;font-family:var(--display)">03</div>
+          <div style="color:var(--accent3);font-size:20px;margin-bottom:6px">③</div>
           <div style="font-family:var(--display);font-size:12px;color:#fff;margin-bottom:4px">Token Issued</div>
           <div style="font-size:10px;color:var(--muted)">Session token gates all transactions</div>
         </div>
         <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
-          <div style="color:var(--accent);font-size:18px;font-weight:700;margin-bottom:6px;font-family:var(--display)">04</div>
+          <div style="color:var(--accent);font-size:20px;margin-bottom:6px">④</div>
           <div style="font-family:var(--display);font-size:12px;color:#fff;margin-bottom:4px">TX Executes</div>
           <div style="font-size:10px;color:var(--muted)">Only verified agents reach Solana</div>
         </div>
@@ -531,24 +479,28 @@
       <div class="card">
         <div class="card-title">Tier Limits</div>
         <div class="card-sub">BridgeBase pricing tiers. API keys unlock higher limits.</div>
+
         <div style="margin-bottom:16px">
           <div class="key-tier"><span class="tier-badge free">FREE</span></div>
           <div class="limit-row"><span class="limit-label">Agents</span><span class="limit-val">3</span></div>
           <div class="limit-row"><span class="limit-label">Auths/month</span><span class="limit-val">1,000</span></div>
           <div class="limit-row"><span class="limit-label">Price</span><span class="limit-val" style="color:var(--accent)">$0</span></div>
         </div>
+
         <div style="margin-bottom:16px">
           <div class="key-tier"><span class="tier-badge pro">PRO</span></div>
           <div class="limit-row"><span class="limit-label">Agents</span><span class="limit-val">100</span></div>
           <div class="limit-row"><span class="limit-label">Auths/month</span><span class="limit-val">50,000</span></div>
           <div class="limit-row"><span class="limit-label">Price</span><span class="limit-val" style="color:var(--accent2)">$49/mo</span></div>
         </div>
+
         <div style="margin-bottom:16px">
           <div class="key-tier"><span class="tier-badge business">BUSINESS</span></div>
           <div class="limit-row"><span class="limit-label">Agents</span><span class="limit-val">1,000</span></div>
           <div class="limit-row"><span class="limit-label">Auths/month</span><span class="limit-val">500,000</span></div>
           <div class="limit-row"><span class="limit-label">Price</span><span class="limit-val" style="color:var(--accent3)">$299/mo</span></div>
         </div>
+
         <div>
           <div class="key-tier"><span class="tier-badge enterprise">ENTERPRISE</span></div>
           <div class="limit-row"><span class="limit-label">Agents</span><span class="limit-val">Unlimited</span></div>
@@ -564,39 +516,143 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
         <div>
           <div style="font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:8px;text-transform:uppercase">Python SDK</div>
-          <div class="result-box" style="font-size:10px;line-height:1.8"><span class="code-kw">from</span> bridgebase_sdk <span class="code-kw">import</span> BridgeBaseClient<br><br>client = BridgeBaseClient(<br>&nbsp;&nbsp;gateway_url=<span class="code-str">"https://pqc-gateway-production.up.railway.app"</span><br>)<br>token = client.authenticate(agent_id, private_key)</div>
+          <div class="result-box" style="font-size:10px;line-height:1.8">from bridgebase_sdk import BridgeBaseClient<br><br>client = BridgeBaseClient(<br>&nbsp;&nbsp;gateway_url="https://pqc-gateway-<br>&nbsp;&nbsp;production.up.railway.app"<br>)<br>token = client.authenticate(<br>&nbsp;&nbsp;agent_id, private_key<br>)</div>
         </div>
         <div>
-          <div style="font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:8px;text-transform:uppercase">JavaScript SDK (ESM)</div>
-          <div class="result-box" style="font-size:10px;line-height:1.8"><span class="code-kw">import</span> { BridgeBaseClient } <span class="code-kw">from</span> <span class="code-str">'bridgebase-sdk'</span><br><br><span class="code-kw">const</span> client = <span class="code-kw">new</span> BridgeBaseClient()<br><span class="code-kw">const</span> token = <span class="code-kw">await</span> client.authenticate(agentId, privateKey)</div>
+          <div style="font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:8px;text-transform:uppercase">JavaScript SDK</div>
+          <div class="result-box" style="font-size:10px;line-height:1.8">const { BridgeBaseClient } =<br>&nbsp;&nbsp;require('bridgebase-sdk')<br><br>const client = new BridgeBaseClient()<br>const token = await client<br>&nbsp;&nbsp;.authenticate(agentId, privateKey)<br></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <div class="footer">
-    <div class="footer-left">
-      <strong>BridgeBaseAI</strong> — Quantum-Safe AI Agent Gateway<br>
-      <a href="mailto:bridgebaseai@gmail.com">bridgebaseai@gmail.com</a> &nbsp;·&nbsp;
-      <a href="https://pqc-gateway-production.up.railway.app" target="_blank">pqc-gateway-production.up.railway.app</a>
+  <!-- PANEL: Pricing -->
+  <div class="panel" id="panel-pricing">
+
+    <!-- Beta banner -->
+    <div style="background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.25);border-radius:10px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px">
+      <span style="font-size:20px">⚡</span>
+      <div>
+        <div style="font-family:var(--display);font-weight:700;color:#ffd700;font-size:14px">Beta Launch — Limited Time</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">BridgeBase uses ML-KEM-768 (NIST FIPS 203) — real post-quantum cryptography. Beta means infrastructure is maturing. Not recommended for mainnet funds above $1,000 until v1.0 audit.</div>
+      </div>
     </div>
-    <div class="footer-right">
-      <a href="https://twitter.com/BridgeBaseAI" target="_blank">@BridgeBaseAI</a> &nbsp;·&nbsp;
-      <a href="https://github.com/BridgeBaseAI/pqc-gateway" target="_blank">GitHub</a> &nbsp;·&nbsp;
-      <a href="https://www.npmjs.com/package/bridgebase-sdk" target="_blank">npm</a><br>
-      ML-KEM-768 &nbsp;·&nbsp; NIST FIPS 203 &nbsp;·&nbsp; Solana Devnet
+
+    <!-- Two tier cards -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+
+      <!-- Free tier -->
+      <div class="card" style="border-color:var(--border2);position:relative">
+        <div style="font-family:var(--display);font-size:22px;font-weight:800;color:#fff;margin-bottom:4px">Free</div>
+        <div style="font-family:var(--display);font-size:40px;font-weight:800;color:var(--accent);line-height:1;margin-bottom:4px">$0</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:20px">forever</div>
+        <div style="border-top:1px solid var(--border);padding-top:16px;margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
+            <span style="color:var(--muted)">Agents</span>
+            <span style="color:#fff;font-weight:700">3 agents</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
+            <span style="color:var(--muted)">Auths/month</span>
+            <span style="color:#fff;font-weight:700">500</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
+            <span style="color:var(--muted)">PQC Handshakes</span>
+            <span style="color:var(--accent);font-weight:700">✓ Included</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
+            <span style="color:var(--muted)">Transaction Gating</span>
+            <span style="color:var(--accent);font-weight:700">✓ Included</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:12px">
+            <span style="color:var(--muted)">On-chain Reputation</span>
+            <span style="color:var(--muted)">✗ Not included</span>
+          </div>
+        </div>
+        <button class="btn-primary" style="background:rgba(0,255,180,0.1);color:var(--accent);border:1px solid var(--border2)" onclick="showTab('register')">Get Started Free</button>
+      </div>
+
+      <!-- Beta Premium -->
+      <div class="card" style="border-color:#ffd700;border-width:2px;position:relative;background:linear-gradient(135deg,rgba(255,215,0,0.04) 0%,rgba(0,255,180,0.04) 100%)">
+        <div style="position:absolute;top:-1px;right:20px;background:#ffd700;color:#000;font-size:10px;font-weight:700;padding:4px 12px;border-radius:0 0 8px 8px;letter-spacing:1px">BETA SPECIAL</div>
+        <div style="font-family:var(--display);font-size:22px;font-weight:800;color:#fff;margin-bottom:4px">Premium</div>
+        <div style="font-family:var(--display);font-size:40px;font-weight:800;color:#ffd700;line-height:1;margin-bottom:4px">$19</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:20px">one-time · lifetime beta access</div>
+        <div style="border-top:1px solid rgba(255,215,0,0.2);padding-top:16px;margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
+            <span style="color:var(--muted)">Agents</span>
+            <span style="color:#ffd700;font-weight:700">Unlimited</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
+            <span style="color:var(--muted)">Auths/month</span>
+            <span style="color:#ffd700;font-weight:700">Unlimited</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
+            <span style="color:var(--muted)">PQC Handshakes</span>
+            <span style="color:var(--accent);font-weight:700">✓ Included</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
+            <span style="color:var(--muted)">Transaction Gating</span>
+            <span style="color:var(--accent);font-weight:700">✓ Included</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
+            <span style="color:var(--muted)">On-chain Reputation</span>
+            <span style="color:var(--accent);font-weight:700">✓ Included</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:12px">
+            <span style="color:var(--muted)">Priority Support</span>
+            <span style="color:var(--accent);font-weight:700">✓ Email</span>
+          </div>
+        </div>
+        <button class="btn-primary" id="phantom-pay-btn" onclick="payWithPhantom()" style="background:#ffd700;color:#000;font-weight:800">
+          ⚡ Pay $19 USDC with Phantom
+        </button>
+        <div style="text-align:center;font-size:10px;color:var(--muted);margin-top:8px">Solana · USDC · Instant · One-time</div>
+      </div>
     </div>
+
+    <!-- Payment status -->
+    <div id="payment-status" style="display:none"></div>
+
+    <!-- How it works -->
+    <div class="card">
+      <div class="card-title" style="margin-bottom:12px">How Payment Works</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
+          <div style="color:#ffd700;font-size:18px;margin-bottom:6px">①</div>
+          <div style="font-family:var(--display);font-size:11px;color:#fff;margin-bottom:4px">Connect Phantom</div>
+          <div style="font-size:10px;color:var(--muted)">Click Pay — Phantom opens automatically</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
+          <div style="color:#ffd700;font-size:18px;margin-bottom:6px">②</div>
+          <div style="font-family:var(--display);font-size:11px;color:#fff;margin-bottom:4px">Send $19 USDC</div>
+          <div style="font-size:10px;color:var(--muted)">Approve the transaction in Phantom</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
+          <div style="color:#ffd700;font-size:18px;margin-bottom:6px">③</div>
+          <div style="font-family:var(--display);font-size:11px;color:#fff;margin-bottom:4px">Get API Key</div>
+          <div style="font-size:10px;color:var(--muted)">Premium API key generated instantly</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
+          <div style="color:#ffd700;font-size:18px;margin-bottom:6px">④</div>
+          <div style="font-family:var(--display);font-size:11px;color:#fff;margin-bottom:4px">Lifetime Access</div>
+          <div style="font-size:10px;color:var(--muted)">Beta access — no recurring charges</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 </div>
 
 <script>
 const API = '';
+const RECEIVER_WALLET = 'F7adZW6Puw69xvxKFARWnoa1Mng629yhDRXiV7xzegG';
+const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
+const BETA_PRICE_USDC = 19;
 let txHistory = [];
 
 function showTab(name) {
-  const names = ['agents','register','handshake','solana','apikeys'];
+  const names = ['agents','register','handshake','solana','apikeys','pricing'];
   document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', names[i] === name));
   document.querySelectorAll('.panel').forEach((p,i) => p.classList.toggle('active', names[i] === name));
   if (name === 'agents') loadAgents();
@@ -654,19 +710,16 @@ async function loadAgents() {
     return;
   }
 
-  const rows = results.map(a => {
-    const passportUrl = `${window.location.origin}/passport/${encodeURIComponent(a.agent_id)}/view`;
-    return `<tr>
+  const rows = results.map(a => `
+    <tr>
       <td><span class="agent-id">${a.agent_id}</span></td>
       <td><span class="pub-key">${a.public_key}</span></td>
       <td><span class="algo-tag">ML-KEM-768</span></td>
       <td><span class="score-badge ${a.reputation_score >= 5 ? 'high' : ''}">${a.reputation_score}</span></td>
       <td class="ts-text">${new Date(a.registered_at).toLocaleDateString()}</td>
-      <td><a class="passport-btn" href="${passportUrl}" target="_blank">View Passport</a></td>
-    </tr>`;
-  }).join('');
+    </tr>`).join('');
 
-  body.innerHTML = `<table><thead><tr><th>Agent ID</th><th>Public Key</th><th>Algorithm</th><th>Reputation</th><th>Registered</th><th>Passport</th></tr></thead><tbody>${rows}</tbody></table>`;
+  body.innerHTML = `<table><thead><tr><th>Agent ID</th><th>Public Key</th><th>Algorithm</th><th>Reputation</th><th>Registered</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 async function registerAgent() {
@@ -692,12 +745,9 @@ async function registerAgent() {
     const data = await r.json();
     if (r.status === 201) {
       result.className = 'result-box success';
-      result.textContent = `+ Agent "${data.agent_id}" registered with ML-KEM-768\n+ Public key stored in gateway registry\n! Copy your private key now — it will not be shown again`;
+      result.textContent = `✓ Agent "${data.agent_id}" registered with ML-KEM-768\n✓ Public key stored in gateway registry\n⚠ Copy your private key now — it will not be shown again`;
       document.getElementById('key-section').style.display = 'block';
       document.getElementById('priv-key-display').textContent = data.private_key_plaintext;
-      const passportUrl = `${window.location.origin}/passport/${encodeURIComponent(id)}/view`;
-      document.getElementById('passport-link-reg').innerHTML =
-        `Passport URL: <a href="${passportUrl}" target="_blank" style="color:var(--accent)">${passportUrl}</a>`;
     } else if (r.status === 409) {
       result.className = 'result-box error';
       result.textContent = `Agent "${id}" already exists in registry.`;
@@ -717,7 +767,7 @@ function copyKey() {
   const key = document.getElementById('priv-key-display').textContent;
   navigator.clipboard.writeText(key).then(() => {
     const btn = document.querySelector('.copy-btn');
-    btn.textContent = 'Copied!';
+    btn.textContent = '✓ Copied!';
     setTimeout(() => btn.textContent = 'Copy Private Key', 2000);
   });
 }
@@ -751,9 +801,9 @@ async function runHandshake() {
       btn.disabled = false; btn.textContent = 'Run Full Handshake'; return;
     }
     const cd = await cr.json();
-    log('hs-log', `+ Challenge issued: ${cd.challenge_id.slice(0,16)}...`, 'ok');
+    log('hs-log', `✓ Challenge issued: ${cd.challenge_id.slice(0,16)}...`, 'ok');
     document.getElementById('step1').className = 'step done';
-    document.getElementById('step1').querySelector('.step-num').textContent = '+';
+    document.getElementById('step1').querySelector('.step-num').textContent = '✓';
 
     document.getElementById('step2').className = 'step active-step';
     log('hs-log', '→ Decapsulating ciphertext...', 'info');
@@ -766,9 +816,9 @@ async function runHandshake() {
       btn.disabled = false; btn.textContent = 'Run Full Handshake'; return;
     }
     const sd = await sr.json();
-    log('hs-log', `+ Shared secret recovered`, 'ok');
+    log('hs-log', `✓ Shared secret recovered`, 'ok');
     document.getElementById('step2').className = 'step done';
-    document.getElementById('step2').querySelector('.step-num').textContent = '+';
+    document.getElementById('step2').querySelector('.step-num').textContent = '✓';
 
     document.getElementById('step3').className = 'step active-step';
     log('hs-log', '→ POST /verify', 'info');
@@ -778,11 +828,11 @@ async function runHandshake() {
     });
     const vd = await vr.json();
     if (vd.verified) {
-      log('hs-log', `+ VERIFIED — PQC handshake complete`, 'ok');
-      log('hs-log', `+ Reputation score: ${vd.reputation_score}`, 'ok');
-      log('hs-log', `+ Session token: ${vd.session_token.slice(0,20)}...`, 'ok');
+      log('hs-log', `✓ VERIFIED — PQC handshake complete`, 'ok');
+      log('hs-log', `✓ Reputation score: ${vd.reputation_score}`, 'ok');
+      log('hs-log', `✓ Session token: ${vd.session_token.slice(0,20)}...`, 'ok');
       document.getElementById('step3').className = 'step done';
-      document.getElementById('step3').querySelector('.step-num').textContent = '+';
+      document.getElementById('step3').querySelector('.step-num').textContent = '✓';
     } else {
       log('hs-log', '✗ Verification failed', 'err');
     }
@@ -792,6 +842,8 @@ async function runHandshake() {
   btn.disabled = false;
   btn.textContent = 'Run Full Handshake';
 }
+
+// ---- Solana Tab ----
 
 function addTxHistory(agentId, status, txType, amount) {
   txHistory.unshift({ agentId, status, txType, amount, time: ts() });
@@ -824,6 +876,7 @@ async function runGatedTx() {
   const privKey = document.getElementById('sol-privkey').value.trim();
   const txType = document.getElementById('sol-tx-type').value;
   const amount = document.getElementById('sol-amount').value.trim() || '0.1';
+
   if (!agentId || !privKey) { alert('Agent ID and private key required'); return; }
 
   const btn = document.getElementById('sol-btn');
@@ -836,6 +889,7 @@ async function runGatedTx() {
   log('sol-log', '→ Step 1: PQC handshake required...', 'info');
 
   try {
+    // Challenge
     const cr = await fetch(`${API}/challenge`, {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ agent_id: agentId })
@@ -847,8 +901,9 @@ async function runGatedTx() {
       btn.disabled = false; btn.textContent = 'Execute Gated Transaction'; return;
     }
     const cd = await cr.json();
-    log('sol-log', '+ Challenge received', 'ok');
+    log('sol-log', '✓ Challenge received', 'ok');
 
+    // Solve
     const sr = await fetch(`${API}/dev/solve`, {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ private_key_b64: privKey, ciphertext_b64: cd.ciphertext })
@@ -859,8 +914,9 @@ async function runGatedTx() {
       btn.disabled = false; btn.textContent = 'Execute Gated Transaction'; return;
     }
     const sd = await sr.json();
-    log('sol-log', '+ Secret decapsulated', 'ok');
+    log('sol-log', '✓ Secret decapsulated', 'ok');
 
+    // Verify
     const vr = await fetch(`${API}/verify`, {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ challenge_id: cd.challenge_id, shared_secret_b64: sd.shared_secret_b64 })
@@ -871,9 +927,10 @@ async function runGatedTx() {
       addTxHistory(agentId, 'blocked', txType, amount);
       btn.disabled = false; btn.textContent = 'Execute Gated Transaction'; return;
     }
-    log('sol-log', `+ PQC identity verified — reputation: ${vd.reputation_score}`, 'ok');
+    log('sol-log', `✓ PQC identity verified — reputation: ${vd.reputation_score}`, 'ok');
     log('sol-log', '→ Step 2: Validating session token...', 'info');
 
+    // Validate token
     const tr = await fetch(`${API}/validate-token`, {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ agent_id: agentId, session_token: vd.session_token })
@@ -885,13 +942,14 @@ async function runGatedTx() {
       btn.disabled = false; btn.textContent = 'Execute Gated Transaction'; return;
     }
 
-    log('sol-log', '+ Gateway cleared — token valid', 'ok');
+    log('sol-log', '✓ Gateway cleared — token valid', 'ok');
     log('sol-log', `→ Step 3: Submitting to Solana devnet...`, 'info');
     await new Promise(r => setTimeout(r, 800));
-    log('sol-log', `+ Transaction submitted: ${txType} ${amount} SOL`, 'ok');
-    log('sol-log', `+ TX authorized by BridgeBase gateway`, 'ok');
-    log('sol-log', `+ TX count this session: ${td.tx_count}`, 'ok');
+    log('sol-log', `✓ Transaction submitted: ${txType} ${amount} SOL`, 'ok');
+    log('sol-log', `✓ TX authorized by BridgeBase gateway`, 'ok');
+    log('sol-log', `✓ TX count this session: ${td.tx_count}`, 'ok');
     addTxHistory(agentId, 'cleared', txType, amount);
+
   } catch(e) {
     log('sol-log', `✗ Error: ${e.message}`, 'err');
   }
@@ -916,17 +974,20 @@ async function testBlockedTx() {
 
   if (r.status === 403) {
     const d = await r.json();
-    log('sol-log', `BLOCKED: ${d.detail}`, 'err');
-    log('sol-log', 'Transaction rejected — no valid PQC token', 'err');
-    log('sol-log', 'Security working correctly', 'ok');
+    log('sol-log', `✓ BLOCKED: ${d.detail}`, 'err');
+    log('sol-log', '✓ Transaction rejected — no valid PQC token', 'err');
+    log('sol-log', '✓ Security working correctly', 'ok');
     addTxHistory(agentId, 'blocked', txType, amount);
   }
 }
+
+// ---- API Keys Tab ----
 
 async function generateApiKey() {
   const adminKey = document.getElementById('admin-key-input').value.trim();
   const tier = document.getElementById('key-tier-select').value;
   const label = document.getElementById('key-label-input').value.trim();
+
   if (!adminKey) { alert('Admin key required'); return; }
 
   const btn = document.getElementById('gen-key-btn');
@@ -936,10 +997,15 @@ async function generateApiKey() {
   try {
     const r = await fetch(`${API}/admin/create-key`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminKey}` },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${adminKey}`
+      },
       body: JSON.stringify({ tier, label })
     });
+
     const data = await r.json();
+
     if (r.ok) {
       document.getElementById('gen-key-result').style.display = 'block';
       document.getElementById('generated-key-display').innerHTML =
@@ -947,13 +1013,14 @@ async function generateApiKey() {
         `<strong>Tier:</strong> ${data.tier}<br>` +
         `<strong>Agents:</strong> ${data.limits.agents}<br>` +
         `<strong>Auths/month:</strong> ${data.limits.auths_per_month}<br><br>` +
-        `Store this key securely — not shown again.`;
+        `⚠ Store this key securely — not shown again.`;
     } else {
       alert(`Error: ${data.detail}`);
     }
   } catch(e) {
     alert(`Cannot reach gateway: ${e.message}`);
   }
+
   btn.disabled = false;
   btn.textContent = 'Generate API Key';
 }
@@ -963,12 +1030,182 @@ function copyApiKey() {
   const keyMatch = text.match(/bb_\w+/);
   if (keyMatch) {
     navigator.clipboard.writeText(keyMatch[0]).then(() => {
-      const btns = document.querySelectorAll('.copy-btn');
-      if (btns[1]) { btns[1].textContent = 'Copied!'; setTimeout(() => btns[1].textContent = 'Copy API Key', 2000); }
+      const btn = document.querySelectorAll('.copy-btn')[1];
+      if (btn) { btn.textContent = '✓ Copied!'; setTimeout(() => btn.textContent = 'Copy API Key', 2000); }
     });
   }
 }
 
+// ---- Phantom Payment ----
+
+function showPaymentStatus(msg, type='info') {
+  const el = document.getElementById('payment-status');
+  const colors = { info: 'var(--accent2)', ok: 'var(--accent)', err: 'var(--danger)', gold: '#ffd700' };
+  el.style.display = 'block';
+  el.style.background = 'rgba(0,0,0,0.4)';
+  el.style.border = `1px solid ${colors[type] || colors.info}`;
+  el.style.borderRadius = '8px';
+  el.style.padding = '14px 18px';
+  el.style.fontFamily = 'var(--mono)';
+  el.style.fontSize = '12px';
+  el.style.color = colors[type] || colors.info;
+  el.style.lineHeight = '1.8';
+  el.style.marginBottom = '16px';
+  el.innerHTML = msg;
+}
+
+async function payWithPhantom() {
+  const btn = document.getElementById('phantom-pay-btn');
+
+  // Check Phantom installed
+  if (!window.solana || !window.solana.isPhantom) {
+    showPaymentStatus(
+      '⚠ Phantom wallet not found.<br>' +
+      'Install Phantom from <a href="https://phantom.app" target="_blank" style="color:#ffd700">phantom.app</a> then refresh this page.',
+      'gold'
+    );
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Connecting Phantom...';
+
+  try {
+    // Connect wallet
+    const resp = await window.solana.connect();
+    const buyerWallet = resp.publicKey.toString();
+    showPaymentStatus(`✓ Wallet connected: ${buyerWallet.slice(0,8)}...${buyerWallet.slice(-8)}<br>⟳ Preparing $${BETA_PRICE_USDC} USDC transaction...`, 'info');
+
+    btn.innerHTML = '<span class="spinner"></span>Waiting for approval...';
+
+    // Load Solana web3 dynamically
+    const web3 = await loadSolanaWeb3();
+    if (!web3) {
+      showPaymentStatus('✗ Failed to load Solana library. Please try again.', 'err');
+      btn.disabled = false;
+      btn.innerHTML = '⚡ Pay $19 USDC with Phantom';
+      return;
+    }
+
+    const connection = new web3.Connection('https://api.mainnet-beta.solana.com', 'confirmed');
+    const buyerPubkey = new web3.PublicKey(buyerWallet);
+    const receiverPubkey = new web3.PublicKey(RECEIVER_WALLET);
+    const usdcMint = new web3.PublicKey(USDC_MINT);
+
+    // Get buyer's USDC token account
+    const TOKEN_PROGRAM_ID = new web3.PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+    const ASSOCIATED_TOKEN_PROGRAM_ID = new web3.PublicKey('ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJe1bJ8');
+
+    function getAssociatedTokenAddress(mint, owner) {
+      return web3.PublicKey.findProgramAddressSync(
+        [owner.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), mint.toBuffer()],
+        ASSOCIATED_TOKEN_PROGRAM_ID
+      )[0];
+    }
+
+    const buyerATA = getAssociatedTokenAddress(usdcMint, buyerPubkey);
+    const receiverATA = getAssociatedTokenAddress(usdcMint, receiverPubkey);
+
+    // Check buyer USDC balance
+    try {
+      const balInfo = await connection.getTokenAccountBalance(buyerATA);
+      const balance = parseFloat(balInfo.value.uiAmount);
+      if (balance < BETA_PRICE_USDC) {
+        showPaymentStatus(
+          `✗ Insufficient USDC balance.<br>` +
+          `Your balance: $${balance.toFixed(2)} USDC<br>` +
+          `Required: $${BETA_PRICE_USDC} USDC<br><br>` +
+          `Get USDC on <a href="https://jup.ag" target="_blank" style="color:#ffd700">Jupiter Exchange</a>`,
+          'err'
+        );
+        btn.disabled = false;
+        btn.innerHTML = '⚡ Pay $19 USDC with Phantom';
+        return;
+      }
+    } catch(e) {
+      showPaymentStatus('✗ No USDC account found. Get USDC first at <a href="https://jup.ag" target="_blank" style="color:#ffd700">jup.ag</a>', 'err');
+      btn.disabled = false;
+      btn.innerHTML = '⚡ Pay $19 USDC with Phantom';
+      return;
+    }
+
+    // Build transfer instruction
+    const amount = BETA_PRICE_USDC * 1_000_000; // USDC has 6 decimals
+    const transferIx = createTransferInstruction(buyerATA, receiverATA, buyerPubkey, amount, TOKEN_PROGRAM_ID);
+
+    const { blockhash } = await connection.getLatestBlockhash();
+    const tx = new web3.Transaction();
+    tx.recentBlockhash = blockhash;
+    tx.feePayer = buyerPubkey;
+    tx.add(transferIx);
+
+    // Sign and send
+    showPaymentStatus('⟳ Please approve transaction in Phantom...', 'gold');
+    const signed = await window.solana.signAndSendTransaction(tx);
+    const sig = signed.signature;
+
+    showPaymentStatus(
+      `⟳ Transaction sent. Confirming on Solana...<br>` +
+      `Signature: ${sig.slice(0,20)}...`,
+      'info'
+    );
+
+    btn.innerHTML = '<span class="spinner"></span>Confirming...';
+
+    // Wait for confirmation
+    await connection.confirmTransaction(sig, 'confirmed');
+
+    // Generate premium API key
+    const premiumKey = `bb_premium_beta_${buyerWallet.slice(0,8)}_${Date.now().toString(36)}`;
+
+    showPaymentStatus(
+      `✓ Payment confirmed! Welcome to BridgeBase Premium Beta.<br><br>` +
+      `<strong style="color:#ffd700">Your Premium API Key:</strong><br>` +
+      `<span style="background:rgba(0,0,0,0.5);padding:8px;border-radius:4px;display:block;margin-top:6px;word-break:break-all;color:#ffd700">${premiumKey}</span><br>` +
+      `<strong>TX:</strong> <a href="https://explorer.solana.com/tx/${sig}" target="_blank" style="color:var(--accent2)">View on Explorer</a><br><br>` +
+      `Save your API key — email bridgebaseai@gmail.com with your wallet address for full activation.`,
+      'ok'
+    );
+
+    btn.innerHTML = '✓ Payment Complete!';
+    btn.style.background = 'var(--accent)';
+
+  } catch(e) {
+    if (e.message && e.message.includes('User rejected')) {
+      showPaymentStatus('✗ Transaction cancelled.', 'err');
+    } else {
+      showPaymentStatus(`✗ Error: ${e.message}<br>Please try again or email bridgebaseai@gmail.com`, 'err');
+    }
+    btn.disabled = false;
+    btn.innerHTML = '⚡ Pay $19 USDC with Phantom';
+  }
+}
+
+function createTransferInstruction(source, dest, owner, amount, programId) {
+  const keys = [
+    { pubkey: source, isSigner: false, isWritable: true },
+    { pubkey: dest, isSigner: false, isWritable: true },
+    { pubkey: owner, isSigner: true, isWritable: false },
+  ];
+  const data = Buffer.alloc(9);
+  data.writeUInt8(3, 0); // Transfer instruction
+  data.writeBigUInt64LE(BigInt(amount), 1);
+  // Use window.solana's web3 PublicKey
+  return { programId, keys, data };
+}
+
+async function loadSolanaWeb3() {
+  if (window.solanaWeb3) return window.solanaWeb3;
+  return new Promise((resolve) => {
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/solana-web3.js/1.87.6/index.iife.min.js';
+    script.onload = () => { window.solanaWeb3 = window.solanaWeb3 || window.solana; resolve(window.solanaWeb3); };
+    script.onerror = () => resolve(null);
+    document.head.appendChild(script);
+  });
+}
+
+// Init
 checkHealth();
 loadAgents();
 setInterval(checkHealth, 10000);

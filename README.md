@@ -177,10 +177,8 @@ client.reputation(agentId)
 
 | Tier | Agents | Auths/month | Price |
 |------|--------|-------------|-------|
-| Free | 3 | 1,000 | $0 |
-| Pro | 100 | 50,000 | $49/mo |
-| Business | 1,000 | 500,000 | $299/mo |
-| Enterprise | Unlimited | Unlimited | $2,000+/mo |
+| Free | 3 | 500 | $0 |
+| Premium | Unlimited | Unlimited | $19/lifetime beta access |
 
 Generate keys via the dashboard or `/admin/create-key`.
 

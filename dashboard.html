@@ -703,7 +703,7 @@ async function loadAgents() {
 
   const rows = results.map(a => `
     <tr>
-      <td><span class="agent-id">${a.agent_id}</span></td>
+      <td><a href="/passport/${a.agent_id}/view" target="_blank" style="color:var(--accent2);font-family:var(--mono);font-size:13px;text-decoration:none;border-bottom:1px solid rgba(0,200,255,0.3)">${a.agent_id}</a></td>
       <td><span class="pub-key">${a.public_key}</span></td>
       <td><span class="algo-tag">ML-KEM-768</span></td>
       <td><span class="score-badge ${a.reputation_score >= 5 ? 'high' : ''}">${a.reputation_score}</span></td>

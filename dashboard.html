@@ -462,10 +462,8 @@
         <input type="text" id="admin-key-input" placeholder="Your BRIDGEBASE_ADMIN_KEY">
         <label>Tier</label>
         <select id="key-tier-select">
-          <option value="free">Free — 3 agents / 1,000 auths/month</option>
-          <option value="pro">Pro — 100 agents / 50,000 auths/month</option>
-          <option value="business">Business — 1,000 agents / 500,000 auths/month</option>
-          <option value="enterprise">Enterprise — Unlimited</option>
+          <option value="free">Free — 3 agents / 500 auths/month</option>
+          <option value="premium">Premium Beta — Unlimited ($19 one-time)</option>
         </select>
         <label>Label (optional)</label>
         <input type="text" id="key-label-input" placeholder="e.g. my-trading-bot">
@@ -478,34 +476,27 @@
 
       <div class="card">
         <div class="card-title">Tier Limits</div>
-        <div class="card-sub">BridgeBase pricing tiers. API keys unlock higher limits.</div>
+        <div class="card-sub">Two simple tiers. No hidden fees.</div>
 
-        <div style="margin-bottom:16px">
+        <div style="margin-bottom:20px;padding:16px;border:1px solid var(--border2);border-radius:8px">
           <div class="key-tier"><span class="tier-badge free">FREE</span></div>
-          <div class="limit-row"><span class="limit-label">Agents</span><span class="limit-val">3</span></div>
-          <div class="limit-row"><span class="limit-label">Auths/month</span><span class="limit-val">1,000</span></div>
-          <div class="limit-row"><span class="limit-label">Price</span><span class="limit-val" style="color:var(--accent)">$0</span></div>
+          <div class="limit-row"><span class="limit-label">Agents</span><span class="limit-val">3 agents</span></div>
+          <div class="limit-row"><span class="limit-label">Auths/month</span><span class="limit-val">500</span></div>
+          <div class="limit-row"><span class="limit-label">Transaction Gating</span><span class="limit-val" style="color:var(--accent)">✓ Included</span></div>
+          <div class="limit-row"><span class="limit-label">On-chain Reputation</span><span class="limit-val" style="color:var(--muted)">✗ Not included</span></div>
+          <div class="limit-row"><span class="limit-label">Price</span><span class="limit-val" style="color:var(--accent)">$0 forever</span></div>
+          <button class="btn-primary" style="margin-top:12px;background:rgba(0,255,180,0.1);color:var(--accent);border:1px solid var(--border2)" onclick="showTab('register')">Get Started Free</button>
         </div>
 
-        <div style="margin-bottom:16px">
-          <div class="key-tier"><span class="tier-badge pro">PRO</span></div>
-          <div class="limit-row"><span class="limit-label">Agents</span><span class="limit-val">100</span></div>
-          <div class="limit-row"><span class="limit-label">Auths/month</span><span class="limit-val">50,000</span></div>
-          <div class="limit-row"><span class="limit-label">Price</span><span class="limit-val" style="color:var(--accent2)">$49/mo</span></div>
-        </div>
-
-        <div style="margin-bottom:16px">
-          <div class="key-tier"><span class="tier-badge business">BUSINESS</span></div>
-          <div class="limit-row"><span class="limit-label">Agents</span><span class="limit-val">1,000</span></div>
-          <div class="limit-row"><span class="limit-label">Auths/month</span><span class="limit-val">500,000</span></div>
-          <div class="limit-row"><span class="limit-label">Price</span><span class="limit-val" style="color:var(--accent3)">$299/mo</span></div>
-        </div>
-
-        <div>
-          <div class="key-tier"><span class="tier-badge enterprise">ENTERPRISE</span></div>
-          <div class="limit-row"><span class="limit-label">Agents</span><span class="limit-val">Unlimited</span></div>
-          <div class="limit-row"><span class="limit-label">Auths/month</span><span class="limit-val">Unlimited</span></div>
-          <div class="limit-row"><span class="limit-label">Price</span><span class="limit-val" style="color:var(--danger)">$2,000+/mo</span></div>
+        <div style="padding:16px;border:2px solid #ffd700;border-radius:8px;background:linear-gradient(135deg,rgba(255,215,0,0.04) 0%,rgba(0,255,180,0.04) 100%)">
+          <div class="key-tier"><span class="tier-badge" style="background:rgba(255,215,0,0.15);color:#ffd700;border:1px solid rgba(255,215,0,0.4)">⚡ PREMIUM BETA</span></div>
+          <div class="limit-row"><span class="limit-label">Agents</span><span class="limit-val" style="color:#ffd700">Unlimited</span></div>
+          <div class="limit-row"><span class="limit-label">Auths/month</span><span class="limit-val" style="color:#ffd700">Unlimited</span></div>
+          <div class="limit-row"><span class="limit-label">Transaction Gating</span><span class="limit-val" style="color:var(--accent)">✓ Included</span></div>
+          <div class="limit-row"><span class="limit-label">On-chain Reputation</span><span class="limit-val" style="color:var(--accent)">✓ Included</span></div>
+          <div class="limit-row"><span class="limit-label">Priority Support</span><span class="limit-val" style="color:var(--accent)">✓ Email</span></div>
+          <div class="limit-row"><span class="limit-label">Price</span><span class="limit-val" style="color:#ffd700">$19 one-time</span></div>
+          <button class="btn-primary" style="margin-top:12px;background:#ffd700;color:#000;font-weight:800" onclick="showTab('pricing')">⚡ Get Beta Access</button>
         </div>
       </div>
     </div>
@@ -1198,7 +1189,7 @@ async function loadSolanaWeb3() {
   if (window.solanaWeb3) return window.solanaWeb3;
   return new Promise((resolve) => {
     const script = document.createElement('script');
-    script.src = 'https://unpkg.com/@solana/web3.js@1.87.6/lib/index.iife.min.js';
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/solana-web3.js/1.87.6/index.iife.min.js';
     script.onload = () => { window.solanaWeb3 = window.solanaWeb3 || window.solana; resolve(window.solanaWeb3); };
     script.onerror = () => resolve(null);
     document.head.appendChild(script);

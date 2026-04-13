@@ -3,227 +3,244 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BridgeBase — Command Center</title>
+<title>BridgeBase | Quantum-Safe AI Agent Gateway — ML-KEM-768 Authentication</title>
+<meta name="description" content="The trust layer for the agentic economy. Quantum-safe AI agent authentication using ML-KEM-768 (NIST FIPS 203). Free to start. Open source.">
+<meta name="keywords" content="quantum safe AI agent, ML-KEM-768, post quantum cryptography, AI agent authentication, Solana AI agent security, PQC gateway, NIST FIPS 203">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://pqc-gateway-production.up.railway.app/">
+<meta property="og:title" content="BridgeBase | Quantum-Safe AI Agent Gateway">
+<meta property="og:description" content="The trust layer for the agentic economy. ML-KEM-768 authentication for AI agents.">
+<meta property="og:url" content="https://pqc-gateway-production.up.railway.app/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@bridgebaseai">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"BridgeBase Gateway","description":"Quantum-safe AI agent authentication using ML-KEM-768 NIST FIPS 203","url":"https://pqc-gateway-production.up.railway.app","applicationCategory":"SecurityApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #080c10;
-    --surface: #0d1117;
-    --surface2: #131920;
-    --border: rgba(0,255,180,0.12);
-    --border2: rgba(0,255,180,0.25);
-    --accent: #00ffb4;
-    --accent2: #00c8ff;
-    --accent3: #ff6b35;
-    --text: #e2ffe6;
-    --muted: #5a7a6a;
-    --danger: #ff4d6d;
-    --mono: 'Space Mono', monospace;
-    --display: 'Syne', sans-serif;
+    --bg: #0a0b0d;
+    --surface: #111318;
+    --surface2: #16181e;
+    --surface3: #1c1f27;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.14);
+    --border3: rgba(255,255,255,0.22);
+    --accent: #9945FF;
+    --accent2: #14F195;
+    --accent3: #00C2FF;
+    --accent-glow: rgba(153,69,255,0.15);
+    --text: #FFFFFF;
+    --text2: #C4C9D4;
+    --text3: #7C8494;
+    --danger: #FF4444;
+    --success: #14F195;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+    --display: 'Inter', sans-serif;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: var(--mono);
-    font-size: 13px;
+    font-family: var(--sans);
+    font-size: 14px;
     min-height: 100vh;
     overflow-x: hidden;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
   }
   body::before {
     content: '';
     position: fixed;
     inset: 0;
-    background-image:
-      linear-gradient(rgba(0,255,180,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,255,180,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
+    background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(153,69,255,0.08) 0%, transparent 60%);
     pointer-events: none;
     z-index: 0;
   }
-  .wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+  .wrap { position: relative; z-index: 1; max-width: 1140px; margin: 0 auto; padding: 32px 24px; }
 
   header {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
-    margin-bottom: 32px;
-    padding-bottom: 20px;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
     border-bottom: 1px solid var(--border);
   }
-  .logo-tag { font-size: 10px; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 4px; }
-  .logo-title { font-family: var(--display); font-size: 28px; font-weight: 800; color: #fff; line-height: 1; }
-  .logo-title span { color: var(--accent); }
+  .logo-tag { font-size: 11px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; font-family: var(--mono); }
+  .logo-title { font-family: var(--display); font-size: 24px; font-weight: 700; color: #fff; line-height: 1; letter-spacing: -0.5px; }
+  .logo-title span { color: var(--accent2); }
   .status-pill {
     display: flex; align-items: center; gap: 8px;
-    background: rgba(0,255,180,0.06);
-    border: 1px solid var(--border2);
-    padding: 8px 16px; border-radius: 100px;
-    font-size: 11px; color: var(--accent);
+    background: rgba(20,241,149,0.08);
+    border: 1px solid rgba(20,241,149,0.2);
+    padding: 8px 18px; border-radius: 100px;
+    font-size: 12px; color: var(--accent2);
+    font-family: var(--sans); font-weight: 500;
   }
   .pulse {
     width: 7px; height: 7px; border-radius: 50%;
-    background: var(--accent);
+    background: var(--accent2);
     animation: pulse 2s ease-in-out infinite;
+    flex-shrink: 0;
   }
   @keyframes pulse {
-    0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(0,255,180,0.4); }
-    50% { opacity:0.7; box-shadow: 0 0 0 6px rgba(0,255,180,0); }
+    0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(20,241,149,0.4); }
+    50% { opacity:0.7; box-shadow: 0 0 0 6px rgba(20,241,149,0); }
   }
 
   .stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 28px;
+    gap: 16px;
+    margin-bottom: 32px;
   }
   .stat {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 18px;
+    border-radius: 12px;
+    padding: 20px 22px;
     position: relative;
     overflow: hidden;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, background 0.2s;
   }
-  .stat:hover { border-color: var(--border2); }
+  .stat:hover { border-color: var(--border2); background: var(--surface2); }
   .stat::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 2px;
+    height: 1px;
     background: var(--accent-line, var(--accent));
-    opacity: 0.6;
+    opacity: 0.5;
   }
-  .stat-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-  .stat-value { font-family: var(--display); font-size: 32px; font-weight: 800; color: #fff; line-height: 1; margin-bottom: 4px; }
-  .stat-sub { font-size: 11px; color: var(--muted); }
+  .stat-label { font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; font-weight: 500; }
+  .stat-value { font-family: var(--display); font-size: 36px; font-weight: 700; color: #fff; line-height: 1; margin-bottom: 6px; letter-spacing: -1px; }
+  .stat-sub { font-size: 12px; color: var(--text3); }
 
   .tabs {
-    display: flex; gap: 2px; margin-bottom: 20px;
+    display: flex; gap: 4px; margin-bottom: 24px;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 4px;
+    border-radius: 12px;
+    padding: 5px;
     width: fit-content;
     flex-wrap: wrap;
   }
   .tab {
-    padding: 8px 18px; border-radius: 7px; cursor: pointer;
-    font-family: var(--mono); font-size: 12px;
-    color: var(--muted); background: none; border: none;
-    transition: all 0.15s; letter-spacing: 0.5px;
+    padding: 9px 20px; border-radius: 8px; cursor: pointer;
+    font-family: var(--sans); font-size: 13px; font-weight: 500;
+    color: var(--text3); background: none; border: none;
+    transition: all 0.15s; letter-spacing: 0;
   }
-  .tab.active { background: rgba(0,255,180,0.1); color: var(--accent); border: 1px solid var(--border2); }
-  .tab:hover:not(.active) { color: var(--text); }
+  .tab.active { background: var(--surface3); color: var(--text); border: 1px solid var(--border2); }
+  .tab:hover:not(.active) { color: var(--text2); background: rgba(255,255,255,0.03); }
 
   .panel { display: none; }
   .panel.active { display: block; }
 
-  .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-  .table-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--border); }
-  .table-title { font-family: var(--display); font-size: 14px; font-weight: 700; color: #fff; }
+  .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .table-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+  .table-title { font-family: var(--display); font-size: 14px; font-weight: 600; color: #fff; }
   .refresh-btn {
-    background: rgba(0,255,180,0.08); border: 1px solid var(--border2);
-    color: var(--accent); padding: 6px 14px; border-radius: 6px;
-    cursor: pointer; font-family: var(--mono); font-size: 11px; transition: all 0.15s;
+    background: transparent; border: 1px solid var(--border2);
+    color: var(--text2); padding: 6px 16px; border-radius: 8px;
+    cursor: pointer; font-family: var(--sans); font-size: 12px; font-weight: 500; transition: all 0.15s;
   }
-  .refresh-btn:hover { background: rgba(0,255,180,0.15); }
+  .refresh-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border3); }
 
   table { width: 100%; border-collapse: collapse; }
-  th { text-align: left; padding: 10px 18px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.2); font-weight: 400; }
-  td { padding: 13px 18px; border-bottom: 1px solid rgba(0,255,180,0.05); vertical-align: middle; }
+  th { text-align: left; padding: 11px 20px; font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text3); border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.15); font-weight: 500; font-family: var(--sans); }
+  td { padding: 14px 20px; border-bottom: 1px solid var(--border); vertical-align: middle; font-size: 13px; }
   tr:last-child td { border-bottom: none; }
-  tr:hover td { background: rgba(0,255,180,0.03); }
+  tr:hover td { background: rgba(255,255,255,0.02); }
 
-  .agent-id { font-family: var(--mono); color: var(--accent2); font-size: 13px; }
-  .pub-key { font-family: var(--mono); font-size: 11px; color: var(--muted); max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .score-badge { display: inline-flex; align-items: center; justify-content: center; background: rgba(0,255,180,0.1); border: 1px solid var(--border2); color: var(--accent); border-radius: 20px; padding: 3px 12px; font-size: 12px; font-weight: 700; min-width: 40px; }
-  .score-badge.high { background: rgba(0,255,180,0.2); border-color: var(--accent); color: #fff; }
-  .algo-tag { background: rgba(0,200,255,0.1); border: 1px solid rgba(0,200,255,0.25); color: var(--accent2); padding: 3px 8px; border-radius: 4px; font-size: 10px; }
-  .ts-text { color: var(--muted); font-size: 11px; }
+  .agent-id { font-family: var(--mono); color: var(--accent3); font-size: 13px; font-weight: 500; }
+  .pub-key { font-family: var(--mono); font-size: 11px; color: var(--text3); max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .score-badge { display: inline-flex; align-items: center; justify-content: center; background: rgba(153,69,255,0.1); border: 1px solid rgba(153,69,255,0.25); color: var(--accent); border-radius: 20px; padding: 3px 12px; font-size: 12px; font-weight: 600; min-width: 40px; font-family: var(--mono); }
+  .score-badge.high { background: rgba(153,69,255,0.2); border-color: var(--accent); color: #fff; }
+  .algo-tag { background: rgba(20,241,149,0.08); border: 1px solid rgba(20,241,149,0.2); color: var(--accent2); padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 500; font-family: var(--sans); }
+  .ts-text { color: var(--text3); font-size: 12px; }
 
-  .reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 22px; }
-  .card-title { font-family: var(--display); font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; }
-  .card-sub { color: var(--muted); font-size: 11px; margin-bottom: 18px; line-height: 1.5; }
+  .reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+  .card-title { font-family: var(--display); font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+  .card-sub { color: var(--text3); font-size: 13px; margin-bottom: 20px; line-height: 1.6; }
 
-  label { display: block; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  label { display: block; font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 6px; font-family: var(--sans); }
   input[type="text"], textarea, select {
     width: 100%;
-    background: rgba(0,0,0,0.4);
+    background: var(--surface2);
     border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 10px 12px;
+    border-radius: 8px;
+    padding: 10px 14px;
     color: var(--text);
-    font-family: var(--mono);
-    font-size: 12px;
-    margin-bottom: 14px;
+    font-family: var(--sans);
+    font-size: 13px;
+    margin-bottom: 16px;
     outline: none;
     transition: border-color 0.15s;
   }
-  input[type="text"]:focus, textarea:focus, select:focus { border-color: var(--border2); }
-  textarea { height: 80px; resize: vertical; }
-  select option { background: var(--surface); }
+  input[type="text"]:focus, textarea:focus, select:focus { border-color: rgba(153,69,255,0.5); box-shadow: 0 0 0 3px rgba(153,69,255,0.08); }
+  textarea { height: 90px; resize: vertical; font-family: var(--mono); font-size: 12px; }
+  select option { background: var(--surface2); }
 
   .btn-primary {
     width: 100%; padding: 12px;
-    background: var(--accent); color: #000;
-    border: none; border-radius: 6px;
-    font-family: var(--display); font-size: 14px; font-weight: 700;
-    cursor: pointer; transition: all 0.15s; letter-spacing: 0.5px;
+    background: var(--accent); color: #fff;
+    border: none; border-radius: 10px;
+    font-family: var(--sans); font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s; letter-spacing: 0;
   }
-  .btn-primary:hover { background: #00e0a0; }
-  .btn-primary:active { transform: scale(0.98); }
-  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-primary:hover { background: #8534e8; transform: translateY(-1px); }
+  .btn-primary:active { transform: scale(0.98) translateY(0); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
   .btn-secondary {
     width: 100%; padding: 10px;
     background: transparent;
-    color: var(--accent2);
-    border: 1px solid rgba(0,200,255,0.3);
-    border-radius: 6px;
-    font-family: var(--display); font-size: 13px; font-weight: 700;
+    color: var(--text2);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    font-family: var(--sans); font-size: 13px; font-weight: 500;
     cursor: pointer; transition: all 0.15s; margin-top: 8px;
   }
-  .btn-secondary:hover { background: rgba(0,200,255,0.08); }
+  .btn-secondary:hover { background: var(--surface2); color: var(--text); border-color: var(--border3); }
   .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
 
-  .result-box { background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.7; min-height: 80px; word-break: break-all; }
-  .result-box.success { border-color: var(--accent); color: var(--accent); }
-  .result-box.error { border-color: var(--danger); color: var(--danger); }
-  .result-box.info { border-color: var(--accent2); color: var(--accent2); }
+  .result-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; font-family: var(--mono); font-size: 12px; color: var(--text3); line-height: 1.7; min-height: 80px; word-break: break-all; }
+  .result-box.success { border-color: rgba(20,241,149,0.3); color: var(--accent2); background: rgba(20,241,149,0.04); }
+  .result-box.error { border-color: rgba(255,68,68,0.3); color: var(--danger); background: rgba(255,68,68,0.04); }
+  .result-box.info { border-color: rgba(0,194,255,0.3); color: var(--accent3); }
 
-  .key-display { background: rgba(0,0,0,0.6); border: 1px solid rgba(0,255,180,0.3); border-radius: 8px; padding: 12px; font-size: 10px; color: var(--accent); word-break: break-all; line-height: 1.6; margin-top: 10px; max-height: 120px; overflow-y: auto; }
-  .copy-btn { margin-top: 8px; background: transparent; border: 1px solid var(--border2); color: var(--accent); padding: 5px 12px; border-radius: 4px; font-family: var(--mono); font-size: 11px; cursor: pointer; transition: all 0.15s; }
-  .copy-btn:hover { background: rgba(0,255,180,0.1); }
+  .key-display { background: rgba(0,0,0,0.4); border: 1px solid rgba(153,69,255,0.2); border-radius: 8px; padding: 14px; font-size: 11px; color: var(--text2); word-break: break-all; line-height: 1.6; margin-top: 12px; max-height: 120px; overflow-y: auto; font-family: var(--mono); }
+  .copy-btn { margin-top: 8px; background: transparent; border: 1px solid var(--border2); color: var(--text2); padding: 6px 14px; border-radius: 6px; font-family: var(--sans); font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+  .copy-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border3); }
 
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
-  .step { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
-  .step.done { border-color: var(--accent); }
-  .step.active-step { border-color: var(--accent2); animation: stepglow 2s ease-in-out infinite; }
-  @keyframes stepglow { 0%,100% { box-shadow: 0 0 0 0 rgba(0,200,255,0); } 50% { box-shadow: 0 0 16px rgba(0,200,255,0.2); } }
-  .step-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(0,255,180,0.1); border: 1px solid var(--border2); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-bottom: 10px; font-family: var(--display); }
-  .step.done .step-num { background: var(--accent); color: #000; border-color: var(--accent); }
-  .step-label { font-family: var(--display); font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
-  .step-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+  .step { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .step.done { border-color: rgba(20,241,149,0.3); background: rgba(20,241,149,0.04); }
+  .step.active-step { border-color: rgba(153,69,255,0.4); animation: stepglow 2s ease-in-out infinite; }
+  @keyframes stepglow { 0%,100% { box-shadow: 0 0 0 0 rgba(153,69,255,0); } 50% { box-shadow: 0 0 20px rgba(153,69,255,0.15); } }
+  .step-num { width: 30px; height: 30px; border-radius: 50%; background: rgba(153,69,255,0.1); border: 1px solid rgba(153,69,255,0.3); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-bottom: 12px; font-family: var(--mono); }
+  .step.done .step-num { background: var(--accent2); color: #000; border-color: var(--accent2); }
+  .step-label { font-family: var(--display); font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+  .step-desc { font-size: 12px; color: var(--text3); line-height: 1.5; }
 
-  .log-area { background: rgba(0,0,0,0.6); border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-family: var(--mono); font-size: 11px; line-height: 1.9; min-height: 160px; max-height: 300px; overflow-y: auto; }
-  .log-line { display: flex; gap: 10px; }
-  .log-time { color: var(--muted); flex-shrink: 0; }
-  .log-ok { color: var(--accent); }
-  .log-info { color: var(--accent2); }
+  .log-area { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; font-family: var(--mono); font-size: 12px; line-height: 1.8; min-height: 160px; max-height: 300px; overflow-y: auto; }
+  .log-line { display: flex; gap: 12px; }
+  .log-time { color: var(--text3); flex-shrink: 0; }
+  .log-ok { color: var(--accent2); }
+  .log-info { color: var(--accent3); }
   .log-err { color: var(--danger); }
-  .log-warn { color: var(--accent3); }
+  .log-warn { color: #f59e0b; }
 
-  .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
-  .empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.3; }
-  .empty-text { font-family: var(--display); font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
-  .empty-sub { font-size: 12px; }
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text3); }
+  .empty-icon { font-size: 36px; margin-bottom: 14px; opacity: 0.2; }
+  .empty-text { font-family: var(--display); font-size: 16px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
+  .empty-sub { font-size: 13px; }
 
   @keyframes spin { to { transform: rotate(360deg); } }
-  .spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid rgba(0,255,180,0.2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 6px; }
+  .spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid rgba(153,69,255,0.2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 6px; }
 
   /* Solana tab styles */
   .sol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
@@ -233,8 +250,8 @@
   .tx-dot.blocked { background: var(--danger); }
   .tx-info { flex: 1; }
   .tx-agent { color: var(--accent2); font-size: 12px; }
-  .tx-sig { color: var(--muted); font-size: 10px; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 280px; }
-  .tx-time { color: var(--muted); font-size: 10px; flex-shrink: 0; }
+  .tx-sig { color: var(--text3); font-size: 10px; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 280px; }
+  .tx-time { color: var(--text3); font-size: 10px; flex-shrink: 0; }
   .tx-status { font-size: 10px; padding: 2px 8px; border-radius: 4px; }
   .tx-status.cleared { background: rgba(0,255,180,0.1); color: var(--accent); border: 1px solid var(--border2); }
   .tx-status.blocked { background: rgba(255,77,109,0.1); color: var(--danger); border: 1px solid rgba(255,77,109,0.3); }
@@ -249,14 +266,15 @@
 
   .limit-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 11px; }
   .limit-row:last-child { border-bottom: none; }
-  .limit-label { color: var(--muted); }
+  .limit-label { color: var(--text3); }
   .limit-val { color: var(--text); font-weight: 700; }
 
   .generated-key { background: rgba(0,0,0,0.6); border: 1px solid rgba(0,255,180,0.4); border-radius: 8px; padding: 14px; font-size: 11px; color: var(--accent); word-break: break-all; line-height: 1.8; margin-top: 12px; }
 
-  @media (max-width: 700px) {
+  @media (max-width: 768px) {
     .stats { grid-template-columns: 1fr 1fr; }
     .reg-grid, .steps, .sol-grid { grid-template-columns: 1fr; }
+    .wrap { padding: 20px 16px; }
   }
 </style>
 </head>
@@ -265,7 +283,7 @@
 
   <header>
     <div class="logo-block">
-      <div class="logo-tag">// ml-kem-768 · nist fips 203</div>
+      <div class="logo-tag">ML-KEM-768 · NIST FIPS 203</div>
       <div class="logo-title">BridgeBase <span>Gateway</span></div>
     </div>
     <div class="status-pill">
@@ -420,7 +438,7 @@
         <div style="margin-top:14px">
           <div class="card-title" style="font-size:13px;margin-bottom:8px">Recent Transactions</div>
           <div id="tx-history">
-            <div style="color:var(--muted);font-size:11px;padding:8px 0">No transactions yet</div>
+            <div style="color:var(--text3);font-size:11px;padding:8px 0">No transactions yet</div>
           </div>
         </div>
       </div>
@@ -431,22 +449,22 @@
         <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
           <div style="color:var(--accent);font-size:20px;margin-bottom:6px">①</div>
           <div style="font-family:var(--display);font-size:12px;color:#fff;margin-bottom:4px">Agent Request</div>
-          <div style="font-size:10px;color:var(--muted)">Agent wants to execute Solana transaction</div>
+          <div style="font-size:10px;color:var(--text3)">Agent wants to execute Solana transaction</div>
         </div>
         <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
           <div style="color:var(--accent2);font-size:20px;margin-bottom:6px">②</div>
           <div style="font-family:var(--display);font-size:12px;color:#fff;margin-bottom:4px">PQC Handshake</div>
-          <div style="font-size:10px;color:var(--muted)">ML-KEM-768 identity verification</div>
+          <div style="font-size:10px;color:var(--text3)">ML-KEM-768 identity verification</div>
         </div>
         <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
           <div style="color:var(--accent3);font-size:20px;margin-bottom:6px">③</div>
           <div style="font-family:var(--display);font-size:12px;color:#fff;margin-bottom:4px">Token Issued</div>
-          <div style="font-size:10px;color:var(--muted)">Session token gates all transactions</div>
+          <div style="font-size:10px;color:var(--text3)">Session token gates all transactions</div>
         </div>
         <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
           <div style="color:var(--accent);font-size:20px;margin-bottom:6px">④</div>
           <div style="font-family:var(--display);font-size:12px;color:#fff;margin-bottom:4px">TX Executes</div>
-          <div style="font-size:10px;color:var(--muted)">Only verified agents reach Solana</div>
+          <div style="font-size:10px;color:var(--text3)">Only verified agents reach Solana</div>
         </div>
       </div>
     </div>
@@ -483,7 +501,7 @@
           <div class="limit-row"><span class="limit-label">Agents</span><span class="limit-val">3 agents</span></div>
           <div class="limit-row"><span class="limit-label">Auths/month</span><span class="limit-val">500</span></div>
           <div class="limit-row"><span class="limit-label">Transaction Gating</span><span class="limit-val" style="color:var(--accent)">✓ Included</span></div>
-          <div class="limit-row"><span class="limit-label">On-chain Reputation</span><span class="limit-val" style="color:var(--muted)">✗ Not included</span></div>
+          <div class="limit-row"><span class="limit-label">On-chain Reputation</span><span class="limit-val" style="color:var(--text3)">✗ Not included</span></div>
           <div class="limit-row"><span class="limit-label">Price</span><span class="limit-val" style="color:var(--accent)">$0 forever</span></div>
           <button class="btn-primary" style="margin-top:12px;background:rgba(0,255,180,0.1);color:var(--accent);border:1px solid var(--border2)" onclick="showTab('register')">Get Started Free</button>
         </div>
@@ -506,11 +524,11 @@
       <div class="card-sub" style="margin-bottom:14px">Use your API key with both Python and JavaScript SDKs.</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
         <div>
-          <div style="font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:8px;text-transform:uppercase">Python SDK</div>
+          <div style="font-size:10px;letter-spacing:2px;color:var(--text3);margin-bottom:8px;text-transform:uppercase">Python SDK</div>
           <div class="result-box" style="font-size:10px;line-height:1.8">from bridgebase_sdk import BridgeBaseClient<br><br>client = BridgeBaseClient(<br>&nbsp;&nbsp;gateway_url="https://pqc-gateway-<br>&nbsp;&nbsp;production.up.railway.app"<br>)<br>token = client.authenticate(<br>&nbsp;&nbsp;agent_id, private_key<br>)</div>
         </div>
         <div>
-          <div style="font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:8px;text-transform:uppercase">JavaScript SDK</div>
+          <div style="font-size:10px;letter-spacing:2px;color:var(--text3);margin-bottom:8px;text-transform:uppercase">JavaScript SDK</div>
           <div class="result-box" style="font-size:10px;line-height:1.8">const { BridgeBaseClient } =<br>&nbsp;&nbsp;require('bridgebase-sdk')<br><br>const client = new BridgeBaseClient()<br>const token = await client<br>&nbsp;&nbsp;.authenticate(agentId, privateKey)<br></div>
         </div>
       </div>
@@ -525,7 +543,7 @@
       <span style="font-size:20px">⚡</span>
       <div>
         <div style="font-family:var(--display);font-weight:700;color:#ffd700;font-size:14px">Beta Launch — Limited Time</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">BridgeBase uses ML-KEM-768 (NIST FIPS 203) — real post-quantum cryptography. Beta means infrastructure is maturing. Not recommended for mainnet funds above $1,000 until v1.0 audit.</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">BridgeBase uses ML-KEM-768 (NIST FIPS 203) — real post-quantum cryptography. Beta means infrastructure is maturing. Not recommended for mainnet funds above $1,000 until v1.0 audit.</div>
       </div>
     </div>
 
@@ -536,27 +554,27 @@
       <div class="card" style="border-color:var(--border2);position:relative">
         <div style="font-family:var(--display);font-size:22px;font-weight:800;color:#fff;margin-bottom:4px">Free</div>
         <div style="font-family:var(--display);font-size:40px;font-weight:800;color:var(--accent);line-height:1;margin-bottom:4px">$0</div>
-        <div style="font-size:11px;color:var(--muted);margin-bottom:20px">forever</div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:20px">forever</div>
         <div style="border-top:1px solid var(--border);padding-top:16px;margin-bottom:16px">
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
-            <span style="color:var(--muted)">Agents</span>
+            <span style="color:var(--text3)">Agents</span>
             <span style="color:#fff;font-weight:700">3 agents</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
-            <span style="color:var(--muted)">Auths/month</span>
+            <span style="color:var(--text3)">Auths/month</span>
             <span style="color:#fff;font-weight:700">500</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
-            <span style="color:var(--muted)">PQC Handshakes</span>
+            <span style="color:var(--text3)">PQC Handshakes</span>
             <span style="color:var(--accent);font-weight:700">✓ Included</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
-            <span style="color:var(--muted)">Transaction Gating</span>
+            <span style="color:var(--text3)">Transaction Gating</span>
             <span style="color:var(--accent);font-weight:700">✓ Included</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:12px">
-            <span style="color:var(--muted)">On-chain Reputation</span>
-            <span style="color:var(--muted)">✗ Not included</span>
+            <span style="color:var(--text3)">On-chain Reputation</span>
+            <span style="color:var(--text3)">✗ Not included</span>
           </div>
         </div>
         <button class="btn-primary" style="background:rgba(0,255,180,0.1);color:var(--accent);border:1px solid var(--border2)" onclick="showTab('register')">Get Started Free</button>
@@ -567,37 +585,37 @@
         <div style="position:absolute;top:-1px;right:20px;background:#ffd700;color:#000;font-size:10px;font-weight:700;padding:4px 12px;border-radius:0 0 8px 8px;letter-spacing:1px">BETA SPECIAL</div>
         <div style="font-family:var(--display);font-size:22px;font-weight:800;color:#fff;margin-bottom:4px">Premium</div>
         <div style="font-family:var(--display);font-size:40px;font-weight:800;color:#ffd700;line-height:1;margin-bottom:4px">$19</div>
-        <div style="font-size:11px;color:var(--muted);margin-bottom:20px">one-time · lifetime beta access</div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:20px">one-time · lifetime beta access</div>
         <div style="border-top:1px solid rgba(255,215,0,0.2);padding-top:16px;margin-bottom:16px">
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
-            <span style="color:var(--muted)">Agents</span>
+            <span style="color:var(--text3)">Agents</span>
             <span style="color:#ffd700;font-weight:700">Unlimited</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
-            <span style="color:var(--muted)">Auths/month</span>
+            <span style="color:var(--text3)">Auths/month</span>
             <span style="color:#ffd700;font-weight:700">Unlimited</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
-            <span style="color:var(--muted)">PQC Handshakes</span>
+            <span style="color:var(--text3)">PQC Handshakes</span>
             <span style="color:var(--accent);font-weight:700">✓ Included</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
-            <span style="color:var(--muted)">Transaction Gating</span>
+            <span style="color:var(--text3)">Transaction Gating</span>
             <span style="color:var(--accent);font-weight:700">✓ Included</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
-            <span style="color:var(--muted)">On-chain Reputation</span>
+            <span style="color:var(--text3)">On-chain Reputation</span>
             <span style="color:var(--accent);font-weight:700">✓ Included</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:12px">
-            <span style="color:var(--muted)">Priority Support</span>
+            <span style="color:var(--text3)">Priority Support</span>
             <span style="color:var(--accent);font-weight:700">✓ Email</span>
           </div>
         </div>
         <button class="btn-primary" id="phantom-pay-btn" onclick="payWithPhantom()" style="background:#ffd700;color:#000;font-weight:800">
           ⚡ Pay $19 USDC with Phantom
         </button>
-        <div style="text-align:center;font-size:10px;color:var(--muted);margin-top:8px">Solana · USDC · Instant · One-time</div>
+        <div style="text-align:center;font-size:10px;color:var(--text3);margin-top:8px">Solana · USDC · Instant · One-time</div>
       </div>
     </div>
 
@@ -611,22 +629,22 @@
         <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
           <div style="color:#ffd700;font-size:18px;margin-bottom:6px">①</div>
           <div style="font-family:var(--display);font-size:11px;color:#fff;margin-bottom:4px">Connect Phantom</div>
-          <div style="font-size:10px;color:var(--muted)">Click Pay — Phantom opens automatically</div>
+          <div style="font-size:10px;color:var(--text3)">Click Pay — Phantom opens automatically</div>
         </div>
         <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
           <div style="color:#ffd700;font-size:18px;margin-bottom:6px">②</div>
           <div style="font-family:var(--display);font-size:11px;color:#fff;margin-bottom:4px">Send $19 USDC</div>
-          <div style="font-size:10px;color:var(--muted)">Approve the transaction in Phantom</div>
+          <div style="font-size:10px;color:var(--text3)">Approve the transaction in Phantom</div>
         </div>
         <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
           <div style="color:#ffd700;font-size:18px;margin-bottom:6px">③</div>
           <div style="font-family:var(--display);font-size:11px;color:#fff;margin-bottom:4px">Get API Key</div>
-          <div style="font-size:10px;color:var(--muted)">Premium API key generated instantly</div>
+          <div style="font-size:10px;color:var(--text3)">Premium API key generated instantly</div>
         </div>
         <div style="text-align:center;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border)">
           <div style="color:#ffd700;font-size:18px;margin-bottom:6px">④</div>
           <div style="font-family:var(--display);font-size:11px;color:#fff;margin-bottom:4px">Lifetime Access</div>
-          <div style="font-size:10px;color:var(--muted)">Beta access — no recurring charges</div>
+          <div style="font-size:10px;color:var(--text3)">Beta access — no recurring charges</div>
         </div>
       </div>
     </div>
@@ -845,7 +863,7 @@ function addTxHistory(agentId, status, txType, amount) {
 function renderTxHistory() {
   const el = document.getElementById('tx-history');
   if (txHistory.length === 0) {
-    el.innerHTML = '<div style="color:var(--muted);font-size:11px;padding:8px 0">No transactions yet</div>';
+    el.innerHTML = '<div style="color:var(--text3);font-size:11px;padding:8px 0">No transactions yet</div>';
     return;
   }
   el.innerHTML = txHistory.map(tx => `
